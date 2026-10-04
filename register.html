@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>K-Beauty Salon · Create Account</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" type="image/png" href="images/kb-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/kb-ui.css">
+</head>
+<body class="auth-page-bg register-page">
+
+    <div class="auth-ribbon">Join Our Salon Family</div>
+
+    <div class="split-auth-container split-auth-container--register">
+        <!-- Left: Brand imagery -->
+        <div class="split-image-panel">
+            <div class="split-image-caption">
+                <h3>Begin your beauty journey</h3>
+                <p>Join K-Beauty Salon & Aesthetic and book your first ritual</p>
+            </div>
+        </div>
+
+        <!-- Right: Register form -->
+        <div class="split-form-panel split-form-panel--register">
+            <div class="split-form-header">
+                <img src="images/kb-logo.png" alt="K-Beauty Salon Logo" class="auth-logo-img">
+                <p class="brand-tagline">Client Registration</p>
+                <h2>Create your account</h2>
+                <p>Tell us about yourself so we can personalize your salon experience from day one</p>
+            </div>
+
+            <form id="register-form">
+                <p class="register-section-title"><i class="fas fa-user"></i> Account</p>
+
+                <div class="form-group-clean">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" class="input-line" placeholder="e.g. Min-ji Park" required>
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="input-line" placeholder="hello@example.com" required>
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="input-line" placeholder="Create a secure password" required autocomplete="new-password">
+                    <i class="fa-regular fa-eye toggle-password" data-target="password"></i>
+                </div>
+
+                <ul class="password-requirements" id="password-requirements" aria-live="polite"></ul>
+
+                <div class="form-group-clean">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="input-line" placeholder="Re-enter your password" required autocomplete="new-password">
+                    <i class="fa-regular fa-eye toggle-password" data-target="confirm-password"></i>
+                </div>
+                <p class="password-match-msg" id="password-match-msg"></p>
+
+                <div class="auth-message" id="register-message" style="display:none;"></div>
+
+                <p class="register-section-title"><i class="fas fa-id-card"></i> Personal Information</p>
+
+                <div class="form-row-2-auth">
+                    <div class="form-group-clean">
+                        <label for="phone">Phone Number <span class="label-optional">(optional)</span></label>
+                        <input type="tel" id="phone" class="input-line" placeholder="+63 9XX XXX XXXX">
+                    </div>
+                    <div class="form-group-clean">
+                        <label for="birthday">Date of Birth</label>
+                        <input type="date" id="birthday" class="input-line" required>
+                    </div>
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="gender">Gender</label>
+                    <select id="gender" class="input-line" required>
+                        <option value="" disabled selected>Select gender</option>
+                        <option value="female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="non-binary">Non-binary</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <p class="register-section-title"><i class="fas fa-spa"></i> Beauty Preferences</p>
+                <p class="register-section-hint">We use this to recommend treatments on your dashboard.</p>
+
+                <div class="form-row-2-auth">
+                    <div class="form-group-clean">
+                        <label for="skinType">Skin Type</label>
+                        <select id="skinType" class="input-line" required>
+                            <option value="" disabled selected>Select skin type</option>
+                            <option value="normal">Normal</option>
+                            <option value="dry">Dry</option>
+                            <option value="oily">Oily</option>
+                            <option value="combination">Combination</option>
+                            <option value="sensitive">Sensitive</option>
+                        </select>
+                    </div>
+                    <div class="form-group-clean">
+                        <label for="hairType">Hair Type</label>
+                        <select id="hairType" class="input-line" required>
+                            <option value="" disabled selected>Select hair type</option>
+                            <option value="straight">Straight</option>
+                            <option value="wavy">Wavy</option>
+                            <option value="curly">Curly</option>
+                            <option value="coily">Coily</option>
+                            <option value="fine">Fine</option>
+                            <option value="thick">Thick</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="allergies">Allergies & Sensitivities <span class="label-optional">(optional)</span></label>
+                    <textarea id="allergies" class="input-line input-textarea" rows="2" placeholder="e.g. latex, certain oils, fragrances..."></textarea>
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="beautyNotes">Notes for Your Stylist <span class="label-optional">(optional)</span></label>
+                    <textarea id="beautyNotes" class="input-line input-textarea" rows="2" placeholder="Scalp concerns, skin goals, pressure preference..."></textarea>
+                </div>
+
+                <p class="register-section-title"><i class="fas fa-file-contract"></i> Agreement</p>
+
+                <label class="terms-checkbox">
+                    <input type="checkbox" id="acceptTerms" required />
+                    <span>I have read and agree to the <button type="button" class="terms-link-btn" id="openTermsBtn">Terms & Conditions</button> and consent to the collection of my personal information as described therein.</span>
+                </label>
+
+                <button type="submit" id="register-btn" class="btn-auth-pink" style="margin-top: 8px;">Create Account</button>
+            </form>
+
+            <p class="auth-footer-text">
+                Already a member? <a href="index.html">Sign in</a>
+            </p>
+            <a href="home.html" class="auth-back-home">&larr; Back to website</a>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="terms-overlay" id="termsOverlay" aria-hidden="true">
+        <div class="terms-modal" role="dialog" aria-labelledby="termsModalTitle" aria-modal="true">
+            <div class="terms-modal-header">
+                <h3 id="termsModalTitle">Terms & Conditions</h3>
+                <button type="button" class="terms-close-btn" id="closeTermsBtn" aria-label="Close">&times;</button>
+            </div>
+            <div class="terms-modal-body">
+                <p class="terms-updated">Effective date: August 12, 2026 · K-Beauty Salon & Aesthetic, San Pablo City, Laguna</p>
+
+                <h4>1. Acceptance of Terms</h4>
+                <p>By creating an account, you agree to these Terms & Conditions and our privacy practices. If you do not agree, please do not register or use the client portal.</p>
+
+                <h4>2. Personal Information We Collect</h4>
+                <p>When you register, we collect information you provide directly, including:</p>
+                <ul>
+                    <li>Account details: full name, email address, and password (stored securely via Firebase Authentication)</li>
+                    <li>Personal details: phone number, date of birth, and gender</li>
+                    <li>Beauty profile: skin type, hair type, allergies, sensitivities, and stylist notes</li>
+                    <li>Optional profile photo, if you choose to upload one</li>
+                    <li>Booking history, appointment preferences, and feedback you submit after visits</li>
+                </ul>
+
+                <h4>3. How We Use Your Information</h4>
+                <p>Your information is used to:</p>
+                <ul>
+                    <li>Create and manage your client account</li>
+                    <li>Process appointment bookings, reminders, and salon communications</li>
+                    <li>Personalize service recommendations on your dashboard</li>
+                    <li>Inform stylists of allergies, sensitivities, and treatment preferences for your safety</li>
+                    <li>Improve our services, subject to your notification preferences</li>
+                </ul>
+
+                <h4>4. Data Storage & Security</h4>
+                <p>Your data is stored using Google Firebase (Authentication, Cloud Firestore, and Cloud Storage). We apply reasonable technical and organizational measures to protect your information. No method of transmission over the internet is 100% secure; you share information at your own risk.</p>
+
+                <h4>5. Sharing of Information</h4>
+                <p>We do not sell your personal information. Your profile and booking details may be accessed by authorized salon staff and administrators solely to provide services, manage appointments, and operate the business. We may disclose information if required by law.</p>
+
+                <h4>6. Your Rights & Choices</h4>
+                <p>You may update your profile information at any time in the client portal. You may opt in or out of promotional emails via your notification settings. You may request account deletion through the profile page; upon deletion, we will remove or anonymize your data except where retention is required by law or legitimate business needs.</p>
+
+                <h4>7. Age Requirement</h4>
+                <p>You must be at least 18 years old to create an account. If you are under 18, a parent or legal guardian must create and manage the account on your behalf.</p>
+
+                <h4>8. Health & Allergy Disclaimer</h4>
+                <p>Information you provide about allergies and sensitivities helps our team deliver safer treatments, but you are responsible for informing staff of any changes before each visit. K-Beauty Salon is not liable for reactions resulting from incomplete or inaccurate health information.</p>
+
+                <h4>9. Appointment & Cancellation Policy</h4>
+                <p>Bookings are subject to salon availability and staff confirmation. Cancellation requests submitted through the portal are reviewed by salon administration. Repeated no-shows or late cancellations may affect future booking privileges.</p>
+
+                <h4>10. Marketing Communications</h4>
+                <p>Appointment reminders and booking confirmations are sent by default. Promotional updates are optional and can be disabled in your profile settings at any time.</p>
+
+                <h4>11. Changes to These Terms</h4>
+                <p>We may update these Terms from time to time. Continued use of the portal after changes are posted constitutes acceptance of the revised Terms.</p>
+
+                <h4>12. Contact Us</h4>
+                <p>For privacy requests, data corrections, or questions about these Terms, contact K-Beauty Salon & Aesthetic at <strong>+63 912 345 6789</strong> or visit us in San Pablo City, Laguna.</p>
+            </div>
+            <div class="terms-modal-footer">
+                <button type="button" class="btn-auth-pink" id="acceptTermsModalBtn">I Understand</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("click", function (e) {
+            const toggleIcon = e.target.closest(".toggle-password");
+            if (toggleIcon) {
+                const targetId = toggleIcon.dataset.target || "password";
+                const passwordInput = document.getElementById(targetId);
+                if (!passwordInput) return;
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    toggleIcon.classList.remove("fa-eye");
+                    toggleIcon.classList.add("fa-eye-slash");
+                } else {
+                    passwordInput.type = "password";
+                    toggleIcon.classList.remove("fa-eye-slash");
+                    toggleIcon.classList.add("fa-eye");
+                }
+            }
+        });
+
+        const termsOverlay = document.getElementById("termsOverlay");
+        const acceptTerms = document.getElementById("acceptTerms");
+        document.getElementById("openTermsBtn")?.addEventListener("click", (e) => {
+            e.preventDefault();
+            termsOverlay?.classList.add("active");
+            termsOverlay?.setAttribute("aria-hidden", "false");
+        });
+        document.getElementById("closeTermsBtn")?.addEventListener("click", () => {
+            termsOverlay?.classList.remove("active");
+            termsOverlay?.setAttribute("aria-hidden", "true");
+        });
+        document.getElementById("acceptTermsModalBtn")?.addEventListener("click", () => {
+            if (acceptTerms) acceptTerms.checked = true;
+            termsOverlay?.classList.remove("active");
+            termsOverlay?.setAttribute("aria-hidden", "true");
+        });
+        termsOverlay?.addEventListener("click", (e) => {
+            if (e.target === termsOverlay) {
+                termsOverlay.classList.remove("active");
+                termsOverlay.setAttribute("aria-hidden", "true");
+            }
+        });
+    </script>
+
+    <script type="module" src="js/register.js"></script>
+</body>
+</html>

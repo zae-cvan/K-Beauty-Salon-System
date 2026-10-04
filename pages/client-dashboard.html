@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>K-Beauty · Client Portal</title>
+    <link rel="stylesheet" href="../css/client.css" />
+    <link rel="stylesheet" href="../css/portal-polish.css" />
+    <link rel="icon" type="image/png" href="../images/kb-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel="stylesheet" href="../css/mobile.css" />
+    <link rel="stylesheet" href="../css/kb-ui.css" />
+</head>
+<body class="client-body">
+
+    <div class="app-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <img src="../images/kb-logo.png" alt="K-Beauty Salon" class="sidebar-logo-img">
+                <span class="sidebar-portal-badge">Client Portal</span>
+            </div>
+            <p class="sidebar-tagline"><i class="fa-solid fa-heart" style="font-size:10px;"></i> Salon System</p>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-tab="tabDashboard"><i class="fas fa-home"></i> Overview</button>
+                <button class="nav-item" data-tab="tabBooking"><i class="fas fa-calendar-check"></i> Bookings</button>
+                <button class="nav-item" data-tab="tabHistory"><i class="fas fa-history"></i> History</button>
+                <button class="nav-item" data-tab="tabProfile"><i class="fas fa-user"></i> Profile</button>
+            </nav>
+
+            <div class="sidebar-profile" id="sidebarProfile">
+                <div class="avatar" id="sidebarAvatar">A</div>
+                <div class="name" id="sidebarName">Guest</div>
+                <button class="view-profile-btn" onclick="document.querySelector('[data-tab=\'tabProfile\']').click()">VIEW PROFILE &rarr;</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <div class="header-date" id="currentDate"></div>
+                <div class="header-actions">
+                    <button type="button" class="notif-bell" id="bellIcon" title="Notifications" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell" aria-hidden="true"></i>
+                        <span class="badge-dot" id="notifBadge" style="display:none;"></span>
+                    </button>
+                    <div class="user-avatar" id="topAvatar" title="Profile">A</div>
+                    <button id="logout-btn" class="btn-logout-header">Logout</button>
+                </div>
+            </header>
+
+            <!-- ═══ OVERVIEW TAB ═══ -->
+            <section class="tab-pane active" id="tabDashboard">
+                <div class="hero-banner">
+                    <div class="hero-content">
+                        <span class="hero-label">Your corner for beauty & wellness</span>
+                        <h1><span id="greetingTime">Good morning</span>, <span id="greetingName">Guest</span>.</h1>
+                        <p class="hero-sub">A little time set aside for you can change the whole rhythm of the week.</p>
+                        <div class="hero-actions">
+                            <button class="btn-reserve" id="heroReserveBtn">Book Appointment &rarr;</button>
+                            <button class="btn-reserve-secondary" id="heroExploreBtn">Explore Services</button>
+                        </div>
+                    </div>
+                    <div class="hero-decoration">
+                        <div class="hero-icon"><i class="fas fa-spa"></i></div>
+                        <div class="hero-est">EST. 2021<br>SAN PABLO CITY, LAGUNA</div>
+                    </div>
+                </div>
+
+                <!-- KPI Stats (no loyalty) -->
+                <div class="stats-kpi-row stats-kpi-row--3" id="statsKpiRow">
+                    <div class="kpi-stat-card">
+                        <div class="kpi-stat-icon rose"><i class="fas fa-calendar-check"></i></div>
+                        <div class="kpi-stat-info">
+                            <div class="kpi-value" id="kpiUpcoming">0</div>
+                            <div class="kpi-label">Upcoming</div>
+                        </div>
+                    </div>
+                    <div class="kpi-stat-card">
+                        <div class="kpi-stat-icon sage"><i class="fas fa-check-circle"></i></div>
+                        <div class="kpi-stat-info">
+                            <div class="kpi-value" id="kpiCompleted">0</div>
+                            <div class="kpi-label">Visits Done</div>
+                        </div>
+                    </div>
+                    <div class="kpi-stat-card">
+                        <div class="kpi-stat-icon blush"><i class="fas fa-spa"></i></div>
+                        <div class="kpi-stat-info">
+                            <div class="kpi-value" id="kpiServicesCount">0</div>
+                            <div class="kpi-label">Treatments Available</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="curated-section" id="servicesSection">
+                    <div class="section-header">
+                        <div>
+                            <span class="label">Our Services</span>
+                            <h2 id="curatedSectionTitle">Salon services for you</h2>
+                            <p class="curated-sub" id="curatedSectionSub">Browse our complete collection of available salon treatments</p>
+                        </div>
+                        <a href="#servicesSection" class="view-all" id="viewAllServicesLink">Browse services &darr;</a>
+                    </div>
+                    <div class="overview-services-toolbar">
+                        <label class="overview-service-search" for="overviewServiceSearch">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <input type="search" id="overviewServiceSearch" placeholder="Search services or categories..." />
+                        </label>
+                        <div class="overview-view-toggle" id="overviewServicesViewToggle" aria-label="Service display mode">
+                            <button type="button" class="overview-view-toggle-btn active" data-view="grid"><i class="fas fa-grip" aria-hidden="true"></i> Grid</button>
+                            <button type="button" class="overview-view-toggle-btn" data-view="list"><i class="fas fa-list" aria-hidden="true"></i> List</button>
+                        </div>
+                    </div>
+                    <div class="overview-category-filters" id="overviewCategoryFilters" aria-label="Filter services by category"></div>
+                    <div class="service-cards-grid" id="dashboardServices">
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                        <div class="skeleton skeleton-card"></div>
+                    </div>
+                </div>
+
+                <!-- Salon Calendar -->
+                <div class="dashboard-calendar-section">
+                    <div class="section-header">
+                        <div>
+                            <span class="label">Your Schedule</span>
+                            <h2>Salon Calendar</h2>
+                            <p class="curated-sub">See when your rituals are booked — start time through end time</p>
+                        </div>
+                    </div>
+                    <div class="salon-calendar-wrap">
+                        <div class="salon-calendar" id="salonCalendar">
+                            <div class="cal-nav">
+                                <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+                                <h3 id="calMonthLabel">—</h3>
+                                <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="cal-weekdays">
+                                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                            </div>
+                            <div class="cal-grid" id="calGrid"></div>
+                            <p class="cal-hours-note"><i class="far fa-clock"></i> Bookings available 9:00 AM – 6:00 PM</p>
+                        </div>
+                        <div class="cal-day-panel" id="calDayPanel">
+                            <div class="cal-day-panel-header">
+                                <span class="label">Selected Day</span>
+                                <h4 id="calDayTitle">Pick a date</h4>
+                            </div>
+                            <div class="cal-day-events" id="calDayEvents">
+                                <p class="cal-day-empty">Tap a highlighted date to view your appointments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-split-grid">
+                    <div class="bottom-card next-visit" id="nextVisitContainer">
+                        <div class="card-header">
+                            <span class="label">Next Visit</span>
+                            <span class="badge-confirmed" id="nextStatusBadge">—</span>
+                        </div>
+                        <h3 class="card-title">A moment already waiting</h3>
+                        <div class="visit-details" id="nextVisitDetails">
+                            <div class="date-box">
+                                <span class="month">—</span>
+                                <span class="day">—</span>
+                                <span class="weekday">—</span>
+                            </div>
+                            <div class="details">
+                                <div class="service-name" id="nextServiceName">No upcoming visit</div>
+                                <div class="stylist" id="nextStylist">Book a treatment to get started</div>
+                                <div class="time-price">
+                                    <i class="far fa-clock"></i> <span id="nextTime">—</span>
+                                    <span class="price" id="nextPrice">—</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="visit-actions" id="nextVisitActions">
+                            <button class="btn-cancel" id="nextCancelBtn">CANCEL</button>
+                            <button class="btn-reschedule" id="nextReschedBtn">RESCHEDULE</button>
+                        </div>
+                    </div>
+
+                    <div class="bottom-card insider-pick" id="insiderPickContainer">
+                        <div class="card-header">
+                            <span class="label">Insider's Pick</span>
+                            <i class="fas fa-star" style="color: var(--gold);"></i>
+                        </div>
+                        <h3 class="card-title">This week's ritual</h3>
+                        <div class="pick-content" id="insiderPickContent">
+                            <div class="pick-content-row">
+                                <div class="insider-pick-icon-box"><i class="fas fa-spa"></i></div>
+                                <div>
+                                    <div class="pick-service-name" id="pickServiceName">Loading...</div>
+                                    <div class="pick-service-meta">Rated 5.0 by our stylists</div>
+                                </div>
+                            </div>
+                            <p class="pick-desc" id="pickDesc">Our most requested treatment for glowing, hydrated skin.</p>
+                        </div>
+                        <div class="visit-actions">
+                            <button class="btn-cancel pick-book-btn" id="pickBookBtn">BOOK THIS RITUAL</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ SERVICES TAB ═══ -->
+            <section class="tab-pane" id="tabServices">
+                <div class="tab-page-header-row">
+                    <div class="tab-page-header" style="margin-bottom:0;">
+                        <span class="label-micro">Our Menu</span>
+                        <h2 class="section-title-elegant">All Services</h2>
+                        <p class="section-sub-elegant" style="margin-bottom:0;">Browse our full collection of K-beauty treatments</p>
+                    </div>
+                    <div class="view-toggle" id="servicesViewToggle">
+                        <button class="view-toggle-btn active" data-view="grid"><i class="fas fa-grip"></i> Grid</button>
+                        <button class="view-toggle-btn" data-view="list"><i class="fas fa-list"></i> List</button>
+                    </div>
+                </div>
+
+                <div class="services-toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="serviceSearchInput" placeholder="Search treatments, categories..." />
+                    </div>
+                    <div class="category-pills" id="categoryPills">
+                        <button class="category-pill active" data-cat="all">All</button>
+                    </div>
+                </div>
+
+                <div id="servicesContainer"></div>
+            </section>
+
+            <!-- ═══ BOOKINGS TAB ═══ -->
+            <section class="tab-pane" id="tabBooking">
+                <div class="bookings-page-header">
+                    <div class="tab-page-header" style="margin-bottom:0;">
+                        <span class="label-micro">Appointments</span>
+                        <h2 class="section-title-elegant">My Bookings</h2>
+                        <p class="section-sub-elegant" style="margin-bottom:0;">Reserve a ritual or manage your upcoming salon passes</p>
+                    </div>
+                </div>
+
+                <div class="bookings-layout">
+                    <!-- Compact Booking Studio -->
+                    <aside class="booking-studio" id="bookingStudio">
+                        <div class="booking-studio-glow"></div>
+                        <div class="booking-studio-header">
+                            <div>
+                                <h4><i class="fas fa-wand-magic-sparkles"></i> Booking Studio</h4>
+                                <p>Curate your next visit in four light steps</p>
+                            </div>
+                            <button type="button" class="studio-close-btn" id="closeBookingStudioBtn" aria-label="Close booking panel">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <div class="booking-wizard-steps booking-wizard-steps--compact" id="wizardSteps">
+                            <div class="wizard-step active" data-step="1">
+                                <div class="wizard-step-num">1</div>
+                                <span class="wizard-step-label">Category</span>
+                            </div>
+                            <div class="wizard-step" data-step="2">
+                                <div class="wizard-step-num">2</div>
+                                <span class="wizard-step-label">Service</span>
+                            </div>
+                            <div class="wizard-step" data-step="3">
+                                <div class="wizard-step-num">3</div>
+                                <span class="wizard-step-label">Session</span>
+                            </div>
+                            <div class="wizard-step" data-step="4">
+                                <div class="wizard-step-num">4</div>
+                                <span class="wizard-step-label">Schedule</span>
+                            </div>
+                            <div class="wizard-step" data-step="5">
+                                <div class="wizard-step-num">5</div>
+                                <span class="wizard-step-label">Pay Fee</span>
+                            </div>
+                        </div>
+
+                        <div class="studio-panels">
+                            <div class="studio-panel active" data-panel="1">
+                                <label class="form-label-luxury">What are you in the mood for?</label>
+                                <div class="booking-category-chips" id="bookingCategoryChips"></div>
+                                <select id="bookingCategorySelect" class="input-luxury sr-only-select" aria-hidden="true" tabindex="-1">
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+
+                            <div class="studio-panel" data-panel="2">
+                                <label class="form-label-luxury">Pick your treatment</label>
+                                <div id="serviceSelectionContainer" class="studio-service-scroll">
+                                    <div id="serviceGroupedList"></div>
+                                </div>
+                            </div>
+
+                            <div class="studio-panel" data-panel="3">
+                                <label class="form-label-luxury">Session type</label>
+                                <div id="sessionSelectorContainer">
+                                    <select id="bookingSessionSelect" class="input-luxury">
+                                        <option value="">Select Session</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="studio-panel" data-panel="4">
+                                <label class="form-label-luxury">When would you like to come in?</label>
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label class="form-label-luxury form-label-mini">Preferred Stylist</label>
+                                    <input type="hidden" id="bookingStylistInput" value="" data-picker="bookingStylistPicker" />
+                                    <div class="stylist-picker" id="bookingStylistPicker">
+                                        <p class="stylist-picker-empty">Loading stylists…</p>
+                                    </div>
+                                    <p class="studio-hours-hint" style="margin-top:6px;">Choose a specific stylist or leave as any available</p>
+                                </div>
+                                <div class="form-step-grid studio-schedule-grid">
+                                    <div>
+                                        <label class="form-label-luxury form-label-mini">Date</label>
+                                        <input type="date" id="bookingDateInput" class="input-luxury" />
+                                    </div>
+                                    <div>
+                                        <label class="form-label-luxury form-label-mini">Time</label>
+                                        <select id="bookingTimeInput" class="input-luxury"></select>
+                                        <p class="studio-hours-hint">9:00 AM – 6:00 PM · slots adjust to service duration</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="studio-panel" data-panel="5">
+                                <label class="form-label-luxury">Reservation fee — secure your slot</label>
+                                <p class="studio-hours-hint" style="margin-bottom:12px;">Pay ₱500 now. This amount is deducted from your service total. You pay the remaining balance after your treatment.</p>
+                                <div class="booking-summary reservation-summary" id="studioReservationSummary">
+                                    <div class="summary-row"><span>Service total</span><span id="studioPayTotal">₱0</span></div>
+                                    <div class="summary-row reservation-fee-row"><span>Reservation fee (pay now)</span><span id="studioPayReservation">₱500</span></div>
+                                    <div class="summary-row"><span>Balance due at visit</span><span id="studioPayBalance">₱0</span></div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label-luxury form-label-mini">Payment method</label>
+                                    <div class="reservation-payment-options" id="studioPaymentMethods">
+                                        <label class="reservation-pay-option"><input type="radio" name="studio-reservation-pay" value="qr" checked><span><i class="fas fa-qrcode"></i> QR Payment</span></label>
+                                        <label class="reservation-pay-option"><input type="radio" name="studio-reservation-pay" value="cash"><span>Cash Payment</span></label>
+                                    </div>
+                                    <p class="studio-hours-hint" id="studioPaymentHint" style="margin:6px 0 0;"></p>
+                                    <div class="qr-payment-panel" id="studioQrPaymentPanel" style="display:none;">
+                                        <div class="qr-payment-heading"><i class="fas fa-qrcode"></i><span>Scan the salon payment QR</span></div>
+                                        <div class="qr-provider-options-wrap" id="studioQrProviderSelect" style="display:none;">
+                                            <p class="qr-provider-options-label">Choose a payment option</p>
+                                            <div class="qr-provider-options" id="studioQrProviderOptions"></div>
+                                        </div>
+                                        <div class="qr-payment-image-wrap"><img id="studioQrPaymentImage" alt="Salon payment QR code" /></div>
+                                        <p class="qr-payment-meta" id="studioQrPaymentMeta"></p>
+                                        <p class="qr-payment-instructions" id="studioQrPaymentInstructions"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group payment-proof-group" id="studioPaymentProofGroup" style="display:none;margin-bottom:0;">
+                                    <label class="form-label-luxury form-label-mini">Proof of payment <span class="required-mark">*</span></label>
+                                    <input type="file" id="studioPaymentProof" class="payment-proof-input" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" />
+                                    <p class="studio-hours-hint">Upload a clear screenshot/photo of your payment confirmation. JPG, PNG or WebP · max 5 MB.</p>
+                                    <div class="payment-proof-preview" id="studioPaymentProofPreview" style="display:none;"><img id="studioPaymentProofPreviewImage" alt="Payment proof preview" /><span id="studioPaymentProofFileName"></span></div>
+                                    <div class="payment-proof-status" id="studioPaymentProofStatus"></div>
+                                </div>
+                                <div class="form-group" id="studioPaymentRefGroup" style="margin-bottom:0;">
+                                    <label class="form-label-luxury form-label-mini">Reference number <span class="required-mark">*</span></label>
+                                    <input type="text" id="studioPaymentRef" class="input-luxury" maxlength="100" placeholder="Transaction/reference number" />
+                                </div>
+                            </div>
+                            <div class="studio-panel" data-panel="6">
+                                <div class="booking-success" id="studioConfirmation">
+                                    <i class="fas fa-check-circle booking-success-icon"></i>
+                                    <h4>Your slot is secured!</h4>
+                                    <p id="studioConfirmationText">Your booking request has been submitted and is awaiting confirmation.</p>
+                                    <p class="studio-hours-hint" id="studioPaymentNote"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="studio-preview" id="bookingPreview">
+                            <span class="preview-label">Your selection</span>
+                            <p id="bookingPreviewText">Choose a category to begin</p>
+                        </div>
+
+                        <div class="studio-nav-actions">
+                            <button type="button" class="btn-studio-back" id="studioBackBtn" disabled>Back</button>
+                            <button type="button" class="btn-reserve studio-continue-btn" id="studioContinueBtn" disabled>Continue</button>
+                            <button type="button" class="btn-reserve studio-book-btn" id="bookingQuickBookBtn" style="display:none;" disabled>Pay ₱500 & Book →</button>
+                            <button type="button" class="btn-reserve studio-continue-btn" id="studioDoneBtn" style="display:none;">Done</button>
+                        </div>
+                    </aside>
+
+                    <!-- Upcoming passes -->
+                    <div class="appointments-panel">
+                        <div class="appointments-panel-header">
+                            <div>
+                                <h3>Upcoming Visits</h3>
+                                <p class="appointments-hint">Your salon passes — tap to reschedule or cancel</p>
+                            </div>
+                            <span class="count-badge count-badge--lg" id="bookingCountBadge">0</span>
+                        </div>
+                        <div class="appointments-scroll" id="bookingList"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══ HISTORY TAB ═══ -->
+            <section class="tab-pane" id="tabHistory">
+                <div class="tab-page-header">
+                    <span class="label-micro">Past Visits</span>
+                    <h2 class="section-title-elegant">Your Beauty Journey</h2>
+                    <p class="section-sub-elegant">A timeline of your completed and past appointments</p>
+                </div>
+                <div class="history-timeline" id="historyList"></div>
+            </section>
+
+            <!-- ═══ PROFILE TAB ═══ -->
+            <section class="tab-pane" id="tabProfile">
+                <div class="tab-page-header" style="text-align:center;">
+                    <span class="label-micro">Your Account</span>
+                    <h2 class="section-title-elegant">My Profile</h2>
+                    <p class="section-sub-elegant">Manage your personal details and account settings</p>
+                </div>
+
+                <div class="profile-layout profile-layout--expanded profile-layout--redesigned">
+                    <div class="profile-left profile-summary-card">
+                        <label class="profile-avatar-wrap" id="profileAvatar" for="profilePhotoInput" title="Upload profile photo">
+                            <img id="profileAvatarImg" src="" alt="Avatar" />
+                            <i id="profileAvatarIcon" class="fas fa-user"></i>
+                            <div class="avatar-upload-overlay">
+                                <i class="fas fa-camera"></i>
+                                <span>Change photo</span>
+                            </div>
+                        </label>
+                        <div class="profile-summary-details">
+                            <span class="profile-summary-kicker">Client Account</span>
+                            <h3 class="profile-summary-name" id="profileSummaryName">Your profile</h3>
+                            <p class="profile-summary-email" id="profileSummaryEmail">—</p>
+                            <div class="profile-summary-upload">
+                        <input type="file" id="profilePhotoInput" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" tabindex="-1" />
+                        <button type="button" class="btn-upload-photo" id="profilePhotoBtn">
+                            <i class="fas fa-camera"></i> Upload Photo
+                        </button>
+                        <p class="profile-avatar-hint">Optional · JPG, PNG or WebP · max 2 MB</p>
+                        <p class="profile-member-since" id="profileMemberSince">Member since —</p>
+
+                            </div>
+                        </div>
+
+                        <div class="profile-quick-stats">
+                            <div class="profile-stat-box">
+                                <div class="val" id="profileStatVisits">0</div>
+                                <div class="lbl">Total Visits</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="profile-forms-column">
+                        <form class="profile-form" id="profileForm">
+                            <div class="profile-content-grid">
+                            <!-- Personal Information -->
+                            <div class="profile-card-section profile-personal-info">
+                                <h4 class="profile-section-title"><i class="fas fa-user"></i> Personal Information</h4>
+                                <div class="form-row-2">
+                                    <div class="form-group">
+                                        <label class="form-label-luxury">Full Name</label>
+                                        <input type="text" id="profileName" placeholder="Your full name" class="input-luxury" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label-luxury">Phone Number</label>
+                                        <input type="tel" id="profilePhone" placeholder="+63 9XX XXX XXXX" class="input-luxury" required />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label-luxury">Email Address</label>
+                                    <input type="email" id="profileEmail" class="input-luxury" readonly />
+                                </div>
+                                <div class="form-row-2">
+                                    <div class="form-group">
+                                        <label class="form-label-luxury">Date of Birth</label>
+                                        <input type="date" id="profileBirthday" class="input-luxury" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label-luxury">Gender</label>
+                                        <select id="profileGender" class="input-luxury" required>
+                                            <option value="">Select gender</option>
+                                            <option value="female">Female</option>
+                                            <option value="male">Male</option>
+                                            <option value="non-binary">Non-binary</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </div>
+
+                            <div class="profile-bottom-grid">
+                            <!-- Account & Notifications -->
+                            <div class="profile-card-section">
+                                <h4 class="profile-section-title"><i class="fas fa-shield-halved"></i> Account & Notifications</h4>
+                                <div class="form-group">
+                                    <label class="form-label-luxury">New Password</label>
+                                    <input type="password" id="profilePassword" placeholder="Leave blank to keep current password" class="input-luxury" />
+                                </div>
+                                <label class="pref-checkbox">
+                                    <input type="checkbox" id="profileEmailReminders" checked />
+                                    <span>Email me appointment reminders and booking confirmations</span>
+                                </label>
+                                <label class="pref-checkbox">
+                                    <input type="checkbox" id="profilePromoEmails" />
+                                    <span>Send me new service highlights and salon updates</span>
+                                </label>
+                            </div>
+
+                            <div class="profile-visit-stack">
+                                <div class="salon-info-card profile-salon-card">
+                                    <h5><i class="fas fa-store"></i> Visit Us</h5>
+                                    <div class="salon-info-row"><i class="fas fa-location-dot"></i> San Pablo City, Laguna</div>
+                                    <div class="salon-info-row"><i class="fas fa-clock"></i> Tue–Sun · 9:00 AM – 7:00 PM</div>
+                                    <div class="salon-info-row"><i class="fas fa-phone"></i> +63 912 345 6789</div>
+                                </div>
+                                <div class="profile-account-actions">
+                                    <button type="submit" class="btn-primary profile-save-btn">Save All Changes</button>
+                                    <button type="button" class="btn-danger-soft" id="deleteAccountBtn">Delete Account</button>
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Mobile Bottom Nav -->
+        <nav class="bottom-nav" id="bottomNav">
+            <button class="nav-item active" data-tab="tabDashboard"><i class="fas fa-home"></i><span>Home</span></button>
+            <button class="nav-item" data-tab="tabBooking"><i class="fas fa-calendar-check"></i><span>Book</span><span class="nav-badge" id="bookingBadge">0</span></button>
+            <button class="nav-item" data-tab="tabHistory"><i class="fas fa-clock-rotate-left"></i><span>History</span></button>
+            <button class="nav-item" data-tab="tabProfile"><i class="fas fa-user"></i><span>Profile</span></button>
+        </nav>
+
+        <!-- Notification Panel -->
+        <div class="notif-overlay" id="notifOverlay"></div>
+        <aside class="notif-panel" id="notifPanel" role="dialog" aria-label="Notifications">
+            <div class="notif-panel-header">
+                <h3><i class="fas fa-bell" style="color:var(--rose-deep); margin-right:8px;"></i>Notifications</h3>
+                <div class="notif-panel-header-actions">
+                    <button type="button" class="notif-mark-all" id="notifMarkAllBtn" disabled>Mark all as read</button>
+                    <button class="notif-panel-close" id="notifPanelClose" aria-label="Close notifications"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="notif-panel-body" id="notifPanelBody">
+                <div class="notif-loading">Loading notifications…</div>
+            </div>
+        </aside>
+
+        <!-- Booking Modal -->
+        <div class="modal-overlay" id="bookingModal">
+            <div class="modal-content modal-booking">
+                <div class="modal-header">
+                    <h3 id="modalServiceName">Complete Your Booking</h3>
+                    <span class="modal-close" id="modalCloseBtn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="modalServiceId" />
+                    <input type="hidden" id="modalVariantId" />
+                    <input type="hidden" id="modalFinalPrice" />
+
+                    <div id="bookingDetailsStep">
+                    <div class="booking-summary" id="bookingSummary">
+                        <div class="summary-row"><span>Service</span><span id="summaryService">—</span></div>
+                        <div class="summary-row"><span>Duration</span><span id="summaryDuration">—</span></div>
+                        <div class="summary-row"><span>Time Slot</span><span id="summaryTimeRange">Select a time slot</span></div>
+                        <div class="summary-row"><span>Service total</span><span id="summaryPrice">₱0</span></div>
+                        <div class="summary-row reservation-fee-row"><span>Reservation fee (pay now)</span><span id="summaryReservationFee">₱500</span></div>
+                        <div class="summary-row total"><span>Balance due at visit</span><span id="summaryBalanceDue">₱0</span></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label-luxury">Preferred Stylist</label>
+                        <input type="hidden" id="modalStylist" value="" data-picker="modalStylistPicker" />
+                        <div class="stylist-picker" id="modalStylistPicker">
+                            <p class="stylist-picker-empty">Loading stylists…</p>
+                        </div>
+                    </div>
+                    <div class="form-step-grid">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label-luxury">Date</label>
+                            <input type="date" id="modalDate" />
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label-luxury">Time</label>
+                            <select id="modalTime"></select>
+                            <p class="studio-hours-hint" style="margin-top:6px;">9:00 AM – 6:00 PM</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label-luxury">Special Requests</label>
+                        <textarea id="modalNote" rows="2" placeholder="Allergies, preferences, or notes for your stylist..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+                        <button class="btn-primary" id="modalBookBtn">Continue to Payment</button>
+                    </div>
+                    </div>
+
+                    <div id="bookingPaymentStep" style="display:none;">
+                        <p class="studio-hours-hint" style="margin-bottom:12px;">Pay the reservation fee to confirm your appointment. This ₱500 is deducted from your service total.</p>
+                        <div class="booking-summary reservation-summary">
+                            <div class="summary-row"><span>Service total</span><span id="modalPayTotal">₱0</span></div>
+                            <div class="summary-row reservation-fee-row"><span>Reservation fee (pay now)</span><span id="modalPayReservation">₱500</span></div>
+                            <div class="summary-row total"><span>Balance due at visit</span><span id="modalPayBalance">₱0</span></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label-luxury">Payment method</label>
+                            <div class="reservation-payment-options">
+                                <label class="reservation-pay-option"><input type="radio" name="modal-reservation-pay" value="qr" checked><span><i class="fas fa-qrcode"></i> QR Payment</span></label>
+                                <label class="reservation-pay-option"><input type="radio" name="modal-reservation-pay" value="cash"><span>Cash Payment</span></label>
+                            </div>
+                            <p class="studio-hours-hint" id="modalPaymentHint" style="margin:6px 0 0;"></p>
+                            <div class="qr-payment-panel" id="modalQrPaymentPanel" style="display:none;">
+                                <div class="qr-payment-heading"><i class="fas fa-qrcode"></i><span>Scan the salon payment QR</span></div>
+                                <div class="qr-provider-options-wrap" id="modalQrProviderSelect" style="display:none;">
+                                    <p class="qr-provider-options-label">Choose a payment option</p>
+                                    <div class="qr-provider-options" id="modalQrProviderOptions"></div>
+                                </div>
+                                <div class="qr-payment-image-wrap"><img id="modalQrPaymentImage" alt="Salon payment QR code" /></div>
+                                <p class="qr-payment-meta" id="modalQrPaymentMeta"></p>
+                                <p class="qr-payment-instructions" id="modalQrPaymentInstructions"></p>
+                            </div>
+                        </div>
+                        <div class="form-group payment-proof-group" id="modalPaymentProofGroup" style="display:none;">
+                            <label class="form-label-luxury">Proof of payment <span class="required-mark">*</span></label>
+                            <input type="file" id="modalPaymentProof" class="payment-proof-input" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" />
+                            <p class="studio-hours-hint">Upload a clear screenshot/photo of your payment confirmation. JPG, PNG or WebP · max 5 MB.</p>
+                            <div class="payment-proof-preview" id="modalPaymentProofPreview" style="display:none;"><img id="modalPaymentProofPreviewImage" alt="Payment proof preview" /><span id="modalPaymentProofFileName"></span></div>
+                            <div class="payment-proof-status" id="modalPaymentProofStatus"></div>
+                        </div>
+                        <div class="form-group" id="modalPaymentRefGroup">
+                            <label class="form-label-luxury">Reference number <span class="required-mark">*</span></label>
+                            <input type="text" id="modalPaymentRef" class="input-luxury" maxlength="100" placeholder="Transaction/reference number" />
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" type="button" id="modalPaymentBackBtn">Back</button>
+                            <button class="btn-primary" type="button" id="modalPayBookBtn">Pay ₱500 & Confirm Booking</button>
+                        </div>
+                    </div>
+
+                    <div id="bookingSuccessStep" style="display:none;">
+                        <div class="booking-success">
+                            <i class="fas fa-check-circle booking-success-icon"></i>
+                            <h4>Your slot is secured!</h4>
+                            <p id="bookingSuccessText">Your booking request has been submitted and is awaiting confirmation.</p>
+                            <p class="studio-hours-hint" id="bookingSuccessPaymentNote"></p>
+                        </div>
+                        <div class="modal-actions">
+                            <button class="btn-primary" type="button" id="bookingSuccessViewBtn">View My Bookings</button>
+                            <button class="btn-secondary" type="button" id="bookingSuccessCloseBtn">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancel Modal -->
+        <div class="modal-overlay" id="cancel-reason-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Request Cancellation</h3>
+                    <span class="modal-close" id="modal-close-cancel-btn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p style="color:var(--text-muted); margin-bottom:12px; line-height:1.5;">We're sorry to see you go. Please share a reason so we can improve your experience.</p>
+                    <div class="form-group">
+                        <textarea id="cancel-reason-text" rows="3" placeholder="Schedule conflict, feeling unwell, etc."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-secondary" id="modal-back-cancel-btn">Keep Appointment</button>
+                        <button class="btn-danger" id="modal-submit-cancel-btn">Submit Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Modal -->
+        <div class="modal-overlay" id="feedbackModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-star" style="color:var(--gold); margin-right:6px;"></i>Share Your Experience</h3>
+                    <span class="modal-close" id="feedbackCloseBtn">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="feedbackApptId" />
+                    <p style="color:var(--text-muted); margin-bottom:6px; text-align:center;">How was your recent visit?</p>
+                    <p id="feedbackServiceName" style="font-weight:600; text-align:center; margin-bottom:16px; font-family:var(--font-serif); font-size:1.1rem;">—</p>
+                    <div class="star-rating">
+                        <i class="far fa-star" data-star="1"></i>
+                        <i class="far fa-star" data-star="2"></i>
+                        <i class="far fa-star" data-star="3"></i>
+                        <i class="far fa-star" data-star="4"></i>
+                        <i class="far fa-star" data-star="5"></i>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label-luxury">Your Thoughts</label>
+                        <textarea id="feedbackComment" rows="3" placeholder="Tell us what you loved..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-secondary" id="feedbackCancelBtn">Later</button>
+                        <button class="btn-primary" id="feedbackSubmitBtn">Submit Feedback</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast-container"></div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"
+            }
+        }
+    </script>
+    <script type="module" src="../js/client.js"></script>
+</body>
+</html>

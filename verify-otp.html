@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>K-Beauty Salon · Verify Code</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" type="image/png" href="images/kb-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/kb-ui.css">
+</head>
+<body class="auth-page-bg auth-page-bg--otp">
+
+    <div class="auth-ribbon">Secure Verification</div>
+
+    <div class="otp-container">
+        <div class="otp-card">
+            <div class="otp-icon"><i class="fas fa-envelope-circle-check"></i></div>
+            <h2 id="otpTitle">Verify your email</h2>
+            <p class="otp-sub" id="otpSubtitle">Your 6-digit code is shown below and expires in 10 minutes.</p>
+            <p class="otp-email-display" id="otpEmailDisplay"></p>
+
+            <div class="auth-message" id="otpMessage" style="display:none;"></div>
+            <div class="visible-otp-banner" id="visibleOtpBanner" style="display:none;"></div>
+
+            <form id="otp-form">
+                <div class="otp-inputs" id="otpInputs">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 1">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 2">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 3">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 4">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 5">
+                    <input type="text" inputmode="numeric" maxlength="1" class="otp-digit" aria-label="Digit 6">
+                </div>
+                <button type="submit" id="otp-verify-btn" class="btn-auth-pink">Verify Code</button>
+            </form>
+
+            <p class="otp-resend">
+                Didn't receive it?
+                <button type="button" id="otp-resend-btn" class="link-btn">Resend code</button>
+            </p>
+            <a href="index.html" class="auth-back-home" id="otpBackLink">&larr; Back to sign in</a>
+        </div>
+    </div>
+
+    <script type="module" src="js/verify-otp.js"></script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* =============================================================
+   K-BEAUTY ADMIN PORTAL — Coquette Theme Overlay
+   Applied over existing admin inline styles
+   ============================================================= */
+
+@import url('design-tokens.css');
+
+body {
+    background: var(--alabaster) !important;
+    color: var(--espresso) !important;
+    font-family: var(--font-sans) !important;
+}
+
+.sidebar {
+    background: var(--white) !important;
+    border-right: 1px solid var(--border-subtle) !important;
+    padding: 20px 16px !important;
+}
+
+.sidebar-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 8px !important;
+    padding-left: 0 !important;
+}
+
+.sidebar-logo-img {
+    height: 36px;
+}
+
+.sidebar-tagline {
+    font-size: 0.72rem;
+    color: var(--dusty-rose);
+    margin: 0 0 16px 4px;
+    font-weight: 600;
+}
+
+.sidebar-brand .brand-icon { display: none !important; }
+
+.sidebar-brand .badge-admin {
+    background: var(--ballet-blush) !important;
+    color: var(--antique-rose-deep) !important;
+    font-size: 0.62rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.8px !important;
+    padding: 4px 10px !important;
+    border-radius: var(--radius-pill) !important;
+    margin-left: 0 !important;
+}
+
+.sidebar-nav a { color: var(--dusty-rose) !important; }
+.sidebar-nav a i { color: var(--dusty-rose) !important; }
+.sidebar-nav a:hover {
+    background: var(--ballet-blush) !important;
+    color: var(--espresso) !important;
+}
+.sidebar-nav a:hover i { color: var(--antique-rose-deep) !important; }
+.sidebar-nav a.active {
+    background: var(--ballet-blush) !important;
+    color: var(--espresso) !important;
+    box-shadow: inset 3px 0 0 var(--coquette-pink) !important;
+    font-weight: 600 !important;
+}
+.sidebar-nav a.active i { color: var(--antique-rose-deep) !important; }
+
+.sidebar-footer { border-top-color: var(--border-subtle) !important; }
+.sidebar-footer .avatar { background: var(--coquette-pink) !important; color: var(--espresso) !important; }
+
+.main-content { background: var(--alabaster) !important; padding-top: 0 !important; }
+
+.topbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 50 !important;
+    background: rgba(255, 248, 249, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    padding: 16px 0 !important;
+    margin-bottom: 24px !important;
+}
+
+.topbar-left h2 { color: var(--espresso) !important; font-family: var(--font-serif); font-weight: 600 !important; }
+.topbar-left p { color: var(--dusty-rose) !important; }
+
+.date-badge {
+    background: var(--white) !important;
+    border-color: var(--kb-border) !important;
+    color: var(--kb-text-muted) !important;
+}
+
+.notif-btn {
+    background: var(--white) !important;
+    border-color: var(--kb-border) !important;
+}
+.notif-btn:hover { background: var(--ballet-blush) !important; }
+
+.kpi-card {
+    background: var(--kb-surface) !important;
+    border-color: var(--kb-border) !important;
+    border-radius: var(--kb-radius-lg) !important;
+    box-shadow: var(--kb-shadow-sm) !important;
+}
+.kpi-card:hover {
+    border-color: var(--kb-primary-light) !important;
+    box-shadow: var(--kb-shadow-md) !important;
+}
+
+/* Soft brand tiles with saturated glyphs — same treatment as the client portal. */
+.kpi-icon.pink { background: linear-gradient(135deg, #fce4ec, #f8c8dc) !important; color: #c22e6d !important; }
+.kpi-icon.purple { background: linear-gradient(135deg, #ecebff, #d8d5fa) !important; color: #6357c4 !important; }
+.kpi-icon.green { background: linear-gradient(135deg, #e4f8e0, #cdf0c6) !important; color: #3d7d4a !important; }
+.kpi-icon.orange { background: linear-gradient(135deg, #ffeeda, #ffe0c4) !important; color: #c07028 !important; }
+
+.glass-card {
+    background: var(--kb-surface) !important;
+    border-color: var(--kb-border) !important;
+    border-radius: var(--kb-radius-lg) !important;
+    box-shadow: var(--kb-shadow-sm) !important;
+}
+
+.glass-card .card-header .action-link { color: var(--antique-rose-deep) !important; }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    background: var(--kb-surface) !important;
+    border-color: var(--kb-border) !important;
+    color: var(--kb-text) !important;
+    border-radius: var(--kb-radius-sm) !important;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--kb-primary) !important;
+    box-shadow: 0 0 0 3px rgba(216, 77, 130, 0.14) !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--kb-pink), var(--kb-pink-dark)) !important;
+    color: var(--white) !important;
+    border-radius: var(--kb-radius-sm) !important;
+    box-shadow: 0 8px 18px rgba(169, 49, 96, 0.2) !important;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #e85b93, var(--kb-pink-dark)) !important;
+    box-shadow: var(--kb-shadow-md) !important;
+}
+
+.btn-secondary {
+    background: var(--kb-surface) !important;
+    color: var(--kb-plum) !important;
+    border: 1px solid var(--kb-border) !important;
+    border-radius: var(--kb-radius-sm) !important;
+}
+
+.btn-outline {
+    color: var(--kb-primary-dark) !important;
+    border-color: var(--kb-primary-light) !important;
+    border-radius: var(--kb-radius-sm) !important;
+}
+.btn-outline:hover { background: var(--kb-bg-soft) !important; }
+
+.custom-table th {
+    color: var(--kb-text-muted) !important;
+    border-bottom-color: var(--kb-border) !important;
+}
+.custom-table td { border-bottom-color: var(--kb-border) !important; }
+.custom-table tr:hover td { background: var(--kb-surface-soft) !important; }
+
+.search-bar {
+    background: var(--kb-surface) !important;
+    border-color: var(--kb-border) !important;
+    border-radius: var(--kb-radius-sm) !important;
+}
+.search-bar:focus-within { border-color: var(--kb-primary) !important; }
+
+.client-card {
+    background: var(--kb-surface-soft) !important;
+    border-color: var(--kb-border) !important;
+}
+.client-card:hover,
+.client-card.active {
+    background: var(--ballet-blush) !important;
+    border-color: var(--antique-rose) !important;
+}
+
+.client-card .avatar-lg {
+    background: var(--coquette-pink) !important;
+    color: var(--espresso) !important;
+}
+
+.client-card .client-spent { color: var(--antique-rose-deep) !important; }
+
+.status-badge.pending { background: #fdf3e2 !important; color: var(--kb-warning) !important; }
+.status-badge.confirmed { background: #eaf0fa !important; color: var(--kb-info) !important; }
+
+.detail-header .avatar-xl {
+    background: var(--coquette-pink) !important;
+    color: var(--espresso) !important;
+}
+
+/* Premium reporting surfaces — presentation only, no dashboard logic. */
+.stat-mini,
+.inventory-summary-card,
+.report-card {
+    background: linear-gradient(145deg, var(--white), var(--alabaster)) !important;
+    border: 1px solid var(--kb-border) !important;
+    border-radius: var(--kb-radius-lg) !important;
+    box-shadow: var(--kb-shadow-sm) !important;
+}
+
+.stat-mini { position: relative; overflow: hidden; }
+.stat-mini::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--gradient-accent-bar);
+}
+.stat-mini .number,
+.inventory-summary-card .summary-number {
+    color: var(--espresso) !important;
+    font-family: var(--font-serif) !important;
+    letter-spacing: -0.03em;
+}
+.stat-mini .label,
+.inventory-summary-card .summary-label { color: var(--dusty-rose) !important; }
+.inventory-summary-card:hover,
+.report-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-medium) !important; }
+
+.table-wrap {
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    background: var(--kb-surface);
+    box-shadow: var(--kb-shadow-sm);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.custom-table th {
+    background: var(--kb-bg-soft) !important;
+    color: var(--kb-text-muted) !important;
+    letter-spacing: .5px !important;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.custom-table td { color: var(--kb-text) !important; }
+.custom-table tr:nth-child(even) td { background: var(--kb-surface-soft); }
+
+.status-badge.active,
+.status-badge.served { background: #e6f7ee !important; color: var(--kb-success) !important; }
+.status-badge.cancelled,
+.status-badge.critical { background: #fdeaea !important; color: var(--kb-danger) !important; }
+.status-badge.completed { background: #eaf0fa !important; color: var(--kb-info) !important; }
+
+.qr-settings-card,
+.payment-proof-admin-modal {
+    border: 1px solid var(--border-subtle) !important;
+    box-shadow: var(--shadow-luxury) !important;
+}
+.qr-settings-preview-card,
+.payment-proof-admin-image-wrap {
+    background: var(--gradient-cream) !important;
+    border-color: var(--border-light) !important;
+}
+.admin-qr-preview-wrap {
+    aspect-ratio: 3 / 4 !important;
+    background: var(--white) !important;
+    box-shadow: var(--shadow-soft);
+}
+
+@media (max-width: 768px) {
+    .main-content { padding: 16px !important; }
+    .topbar { margin: 0 -16px 20px !important; padding: 14px 16px !important; }
+    .topbar-right { gap: 10px !important; }
+    .date-badge { display: none !important; }
+    .glass-card { padding: 18px !important; border-radius: var(--radius-md) !important; }
+    .inventory-filters { width: 100%; }
+    .inventory-filters > input,
+    .inventory-filters > select { flex: 1 1 150px; min-width: 0; }
+    .table-wrap { margin-left: -2px; margin-right: -2px; }
+    .custom-table { min-width: 680px; }
+    .modal-content { width: calc(100% - 24px) !important; padding: 20px !important; border-radius: var(--radius-md) !important; }
+}
+
+@media (max-width: 430px) {
+    .stat-mini-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+    .stat-mini { padding: 14px 12px !important; }
+    .stat-mini .number { font-size: 1.12rem !important; }
+    .qr-settings-actions .btn-primary,
+    .qr-settings-actions .btn-secondary { width: 100%; justify-content: center; }
+}

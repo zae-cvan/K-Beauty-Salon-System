@@ -1,0 +1,10 @@
+{
+  "name": "k-beauty-salon-admin-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "One-off Firebase Admin SDK utilities (e.g. change a user's Auth email)",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

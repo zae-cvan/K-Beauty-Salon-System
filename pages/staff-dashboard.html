@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>K-Beauty Salon · Staff Operations</title>
+    <link rel="stylesheet" href="../css/staff.css">
+    <link rel="stylesheet" href="../css/portal-polish.css">
+    <link rel="icon" type="image/png" href="../images/kb-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/kb-ui.css">
+</head>
+<body class="staff-app">
+
+    <div class="staff-overlay" id="staffOverlay"></div>
+
+    <aside class="staff-sidebar" id="staffSidebar">
+        <div class="sidebar-brand">
+            <img src="../images/kb-logo.png" alt="K-Beauty Salon" class="sidebar-logo">
+            <span class="sidebar-badge">Staff Portal</span>
+        </div>
+        <p class="sidebar-tagline"><i class="fa-solid fa-heart" style="font-size:10px;"></i> Salon System</p>
+        <nav class="sidebar-nav">
+            <button type="button" class="sidebar-link active" data-tab="tabDashboard"><i class="fas fa-gauge-high"></i> Dashboard</button>
+            <button type="button" class="sidebar-link" data-tab="tabAppointments"><i class="fas fa-calendar-check"></i> Appointments</button>
+            <button type="button" class="sidebar-link" data-tab="tabCalendar"><i class="fas fa-calendar-days"></i> Calendar</button>
+            <button type="button" class="sidebar-link" data-tab="tabStylists"><i class="fas fa-user-group"></i> Stylists</button>
+            <button type="button" class="sidebar-link" data-tab="tabClients"><i class="fas fa-users"></i> Clients</button>
+            <button type="button" class="sidebar-link" data-tab="tabWalkins"><i class="fas fa-person-walking"></i> Walk-ins</button>
+            <button type="button" class="sidebar-link" data-tab="tabNotifications"><i class="fas fa-bell"></i> Notifications <span class="sidebar-badge-count" id="sidebarNotifCount" style="display:none;">0</span></button>
+        </nav>
+        <div class="sidebar-divider"></div>
+        <nav class="sidebar-nav sidebar-nav-bottom">
+            <button type="button" class="sidebar-link" data-tab="tabProfile"><i class="fas fa-user"></i> My Profile</button>
+            <button type="button" class="sidebar-link sidebar-logout" id="logout-btn"><i class="fas fa-right-from-bracket"></i> Logout</button>
+        </nav>
+    </aside>
+
+    <div class="staff-shell">
+        <header class="staff-topbar">
+            <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+            <div class="topbar-title">
+                <span class="topbar-label" id="topbarLabel">Operations</span>
+                <h1 id="topbarTitle">Dashboard</h1>
+            </div>
+            <div class="topbar-actions">
+                <button type="button" class="topbar-icon-btn" id="topbarNotifBtn" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-dot" id="topbarNotifDot" style="display:none;"></span>
+                </button>
+                <div class="topbar-avatar" id="topbarAvatar">S</div>
+            </div>
+        </header>
+
+        <main class="staff-content">
+
+            <!-- DASHBOARD -->
+            <section id="tabDashboard" class="staff-tab active">
+                <div class="staff-hero">
+                    <div>
+                        <span class="hero-greeting" id="staffGreeting">Good Morning</span>
+                        <h2 class="hero-title">Good Morning, <span id="staffName">Staff</span> <i class="fa-solid fa-heart hero-heart" aria-hidden="true"></i></h2>
+                        <p class="hero-sub">Here's what's happening today.</p>
+                    </div>
+                    <p class="hero-date" id="staffTodayDate"></p>
+                </div>
+
+                <div class="kpi-grid" id="staffKpiGrid"></div>
+
+                <div class="ops-summary-card">
+                    <h3 class="section-title">Today's Operations</h3>
+                    <div class="ops-summary-grid" id="opsSummaryGrid"></div>
+                </div>
+
+                <div class="dashboard-split">
+                    <div class="staff-card">
+                        <div class="card-header-row">
+                            <h3 class="section-title">Today's Appointments</h3>
+                            <button type="button" class="btn-text-link" data-goto="tabAppointments">View all</button>
+                        </div>
+                        <div class="appt-list" id="todayApptList"></div>
+                    </div>
+                    <div class="staff-card">
+                        <div class="card-header-row">
+                            <h3 class="section-title">Clients Waiting</h3>
+                            <span class="pill-count" id="waitingCountPill">0</span>
+                        </div>
+                        <div class="waiting-list" id="dashboardWaitingList"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- APPOINTMENTS -->
+            <section id="tabAppointments" class="staff-tab">
+                <div class="tab-toolbar">
+                    <div class="toolbar-filters">
+                        <input type="search" id="apptSearch" class="staff-input" placeholder="Search client, service, stylist…">
+                        <select id="apptStatusFilter" class="staff-select">
+                            <option value="active">Active</option>
+                            <option value="all">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="cancellation requested">Cancellation Requested</option>
+                            <option value="served">Served</option>
+                            <option value="cancelled">Cancelled</option>
+                            <option value="no-show">No Show</option>
+                            <option value="denied">Denied</option>
+                            <option value="needs-assignment">Needs Assignment</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                        <input type="date" id="apptDateFilter" class="staff-input">
+                    </div>
+                    <div class="view-toggle" id="apptViewToggle">
+                        <button type="button" class="view-toggle-btn active" data-view="list"><i class="fas fa-list"></i> List</button>
+                        <button type="button" class="view-toggle-btn" data-goto="tabCalendar"><i class="fas fa-calendar"></i> Calendar</button>
+                    </div>
+                </div>
+                <p class="result-count" id="apptCount">0 appointments</p>
+                <div class="table-wrap desktop-only" id="apptTableWrap">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Stylist</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apptTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="appt-cards mobile-only" id="apptCardsMobile"></div>
+            </section>
+
+            <!-- CALENDAR -->
+            <section id="tabCalendar" class="staff-tab">
+                <div class="tab-toolbar">
+                    <div class="cal-nav">
+                        <button type="button" class="btn-icon" id="calPrevBtn"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="calViewLabel">Week View</h3>
+                        <button type="button" class="btn-icon" id="calNextBtn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="view-toggle">
+                        <button type="button" class="view-toggle-btn active" data-cal-view="day">Day</button>
+                        <button type="button" class="view-toggle-btn" data-cal-view="week">Week</button>
+                    </div>
+                </div>
+                <div class="staff-card cal-container" id="staffCalContainer"></div>
+            </section>
+
+            <!-- STYLISTS -->
+            <section id="tabStylists" class="staff-tab">
+                <div class="stylists-layout">
+                    <div class="stylist-picker-col">
+                        <h3 class="section-title">Team</h3>
+                        <div class="stylist-picker-list" id="stylistPickerList"></div>
+                    </div>
+                    <div class="stylist-detail-col staff-card" id="stylistDetailPanel">
+                        <p class="empty-hint">Select a stylist to manage availability</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CLIENTS -->
+            <section id="tabClients" class="staff-tab">
+                <div class="clients-layout">
+                    <div class="client-search-col">
+                        <input type="search" id="clientSearch" class="staff-input" placeholder="Search client by name or email…">
+                        <div class="client-picker-list" id="clientPickerList"></div>
+                    </div>
+                    <div class="client-detail-col staff-card" id="clientDetailPanel">
+                        <p class="empty-hint">Select a client to view history and notes</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WALK-INS -->
+            <section id="tabWalkins" class="staff-tab">
+                <div class="walkin-layout">
+                    <form class="staff-card walkin-form" id="walkinForm">
+                        <h3 class="section-title">Walk-In Client</h3>
+                        <p class="section-sub">Register a client who arrived without an online booking. Past dates are enabled for backfilling pre-system appointments.</p>
+                        <div class="form-grid">
+                            <label class="field"><span>Client Name *</span><input type="text" id="walkinName" class="staff-input" required></label>
+                            <label class="field"><span>Contact *</span><input type="text" id="walkinContact" class="staff-input" placeholder="Phone or email" required></label>
+                            <label class="field"><span>Service *</span><select id="walkinService" class="staff-select" required></select></label>
+                            <label class="field"><span>Stylist</span><select id="walkinStylist" class="staff-select"></select></label>
+                            <label class="field"><span>Date *</span><input type="date" id="walkinDate" class="staff-input" required></label>
+                            <label class="field"><span>Time *</span><select id="walkinTime" class="staff-select" required></select></label>
+                            <label class="field field-full"><span>Notes</span><textarea id="walkinNotes" class="staff-textarea" rows="3"></textarea></label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary" id="walkinSubmitBtn"><i class="fas fa-plus"></i> Add Walk-In</button>
+                        </div>
+                        <p class="form-hint" id="walkinValidationMsg"></p>
+                    </form>
+                    <div class="staff-card">
+                        <h3 class="section-title">Recent Walk-Ins</h3>
+                        <div id="recentWalkinsList"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WAITING LIST -->
+            <section id="tabWaiting" class="staff-tab">
+                <div class="waiting-layout">
+                    <div class="staff-card">
+                        <div class="card-header-row">
+                            <h3 class="section-title">Waiting List</h3>
+                            <button type="button" class="btn-secondary btn-sm" id="addToWaitingBtn"><i class="fas fa-plus"></i> Add to Queue</button>
+                        </div>
+                        <div id="waitingListContainer"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTIFICATIONS -->
+            <section id="tabNotifications" class="staff-tab">
+                <div class="staff-card">
+                    <h3 class="section-title">Staff Notifications</h3>
+                    <div id="staffNotifList" class="notif-list"></div>
+                </div>
+            </section>
+
+            <!-- PROFILE -->
+            <section id="tabProfile" class="staff-tab">
+                <div class="staff-card profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-lg" id="profileAvatarLg" title="Upload profile photo">S</div>
+                        <div>
+                            <h3 id="profileDisplayName">Staff Member</h3>
+                            <p id="profileDisplayEmail"></p>
+                            <span class="role-pill" id="profileDisplayRole">Staff</span>
+                            <div style="margin-top:10px;">
+                                <button type="button" class="btn-primary btn-sm" id="staffUploadPhotoBtn"><i class="fas fa-camera"></i> Upload Photo</button>
+                            </div>
+                            <p class="empty-hint" style="margin:6px 0 0;">JPG, PNG or WebP · max 5 MB</p>
+                        </div>
+                    </div>
+                    <input type="file" id="staffProfilePhotoInput" accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp" style="display:none;" />
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- APPOINTMENT DETAIL MODAL -->
+    <div class="staff-modal-overlay" id="apptModalOverlay">
+        <div class="staff-modal" id="apptModal">
+            <div class="modal-header">
+                <h3 id="apptModalTitle">Appointment Details</h3>
+                <button type="button" class="modal-close" id="apptModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="apptModalBody"></div>
+            <div class="modal-footer" id="apptModalFooter"></div>
+        </div>
+    </div>
+
+    <!-- ASSIGN STYLIST MODAL -->
+    <div class="staff-modal-overlay" id="assignModalOverlay">
+        <div class="staff-modal">
+            <div class="modal-header">
+                <h3>Assign Stylist</h3>
+                <button type="button" class="modal-close" id="assignModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="assignModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="assignModalCancel">Cancel</button>
+                <button type="button" class="btn-primary" id="assignModalConfirm" disabled>Assign Stylist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAITING LIST MODAL -->
+    <div class="staff-modal-overlay" id="waitingModalOverlay">
+        <div class="staff-modal staff-modal-sm">
+            <div class="modal-header">
+                <h3>Add to Waiting List</h3>
+                <button type="button" class="modal-close" id="waitingModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="waitingForm" class="modal-body">
+                <label class="field"><span>Client Name</span><input type="text" id="waitingName" class="staff-input" required></label>
+                <label class="field"><span>Service</span><input type="text" id="waitingService" class="staff-input" required></label>
+                <label class="field"><span>Preferred Stylist</span><select id="waitingStylist" class="staff-select"></select></label>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="waitingModalCancel">Cancel</button>
+                    <button type="submit" class="btn-primary">Add to Queue</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CONFIRM DIALOG -->
+    <div class="staff-modal-overlay" id="confirmOverlay">
+        <div class="staff-modal staff-modal-sm">
+            <div class="modal-header"><h3 id="confirmTitle">Confirm Action</h3></div>
+            <div class="modal-body"><p id="confirmMessage"></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="confirmCancel">Cancel</button>
+                <button type="button" class="btn-danger" id="confirmOk">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DENY APPOINTMENT (reason required) -->
+    <div class="staff-modal-overlay" id="denyModalOverlay">
+        <div class="staff-modal staff-modal-sm">
+            <div class="modal-header">
+                <h3>Deny Appointment</h3>
+                <button type="button" class="modal-close" id="denyModalClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="denyModalSummary" class="modal-summary"></p>
+                <label class="form-label" for="denyReasonInput">Reason for denial <span class="required">*</span></label>
+                <textarea id="denyReasonInput" class="staff-textarea" rows="3" placeholder="Explain why this appointment cannot be accepted…" required></textarea>
+                <p class="form-hint">The client will see this reason in their notification.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" id="denyModalCancel">Cancel</button>
+                <button type="button" class="btn-danger" id="denyModalConfirm">Deny Appointment</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="staff-toast" id="staffToast" role="status"></div>
+
+    <script type="module" src="../js/firebase-config.js"></script>
+    <script type="module" src="../js/staff.js"></script>
+</body>
+</html>

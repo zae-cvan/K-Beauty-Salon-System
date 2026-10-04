@@ -1,0 +1,405 @@
+/* =============================================================
+   K-BEAUTY SALON — COQUETTE DESIGN SYSTEM
+   Classic Ribbon & Lace · Official Color Specification
+   ============================================================= */
+
+/* The entire system uses one normal-text family: Poppins. This is the ONLY
+   Poppins import in the project — every page reaches it through this file. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+:root {
+    /* Product-facing aliases: use these for consistent portal accents. */
+    --primary: #d84d82;
+    --primary-dark: #a93160;
+    --primary-light: #f9d9e4;
+    --secondary: #f28da9;
+    --accent: #f7b9c9;
+    --bg-main: #fffafb;
+    --bg-soft: #fff1f5;
+    --bg-card: #ffffff;
+    --text-primary: #2c1e21;
+    --text-secondary: #7a6269;
+    --border: #efd5df;
+    /* ─── Official Palette (60 / 30 / 10) ─── */
+    --alabaster: #FFF8F9;
+    --ballet-blush: #FCECEC;
+    --coquette-pink: #FCD7D7;
+    --espresso: #2C1E21;
+    --dusty-rose: #A67B88;
+    --antique-rose: #ECBAD0;
+    --antique-rose-deep: #C78CA0;
+    --pale-lavender: #CFCDF8;
+    --soft-sage: #DDF6D9;
+    --white: #FFFFFF;
+
+    /* ─── Legacy Aliases (backward-compatible) ─── */
+    --cream: var(--alabaster);
+    --cream-light: var(--alabaster);
+    --bg-cream: var(--alabaster);
+    --ivory: var(--alabaster);
+    --rose-blush: var(--ballet-blush);
+    --rose-soft: var(--antique-rose);
+    --rose-medium: var(--antique-rose-deep);
+    --rose-deep: var(--dusty-rose);
+    --rose-accent: var(--antique-rose-deep);
+    --pink-hot: var(--antique-rose-deep);
+    --card-rose: var(--ballet-blush);
+
+    --text-dark: var(--espresso);
+    --text-muted: var(--dusty-rose);
+    --text-light: var(--dusty-rose);
+    --charcoal: var(--espresso);
+
+    --border-light: rgba(166, 123, 136, 0.28);
+    --border-subtle: rgba(166, 123, 136, 0.18);
+    --border-rose: rgba(166, 123, 136, 0.22);
+
+    /* Accent remaps (no dark forest / gold) */
+    --forest: var(--espresso);
+    --forest-light: #4a3540;
+    --hero-bg: var(--ballet-blush);
+    --gold: var(--antique-rose-deep);
+    --gold-light: var(--coquette-pink);
+    --gold-rose: var(--antique-rose-deep);
+    --gold-pale: var(--ballet-blush);
+
+    --card-gold: var(--ballet-blush);
+    --card-blush: #FAE4E4;
+    --card-sage: var(--soft-sage);
+    --card-gold-bg: var(--ballet-blush);
+    --card-sig-bg: #FAE4E4;
+    --card-aro-bg: var(--soft-sage);
+
+    /* ─── Semantic ─── */
+    --success: #5a7d62;
+    --success-bg: var(--soft-sage);
+    --error: #9e4a4a;
+    --error-bg: #FAE8E8;
+    --warning: #8a6840;
+    --warning-bg: #FFF5E6;
+
+    /* ─── Typography (single family: Poppins) ─── */
+    --font-primary: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    /* Legacy aliases kept so every existing var(--font-serif/--font-sans/
+       --font-display) reference across the system now resolves to Poppins. */
+    --font-serif: var(--font-primary);
+    --font-display: var(--font-primary);
+    --font-sans: var(--font-primary);
+
+    /* ─── Shared UI system tokens (--kb-*) ───
+       One vocabulary used by every area: landing, auth and the three
+       portals. Values are aligned with the coquette palette above so the
+       whole application reads as a single brand. */
+    --kb-bg: #fff9fb;
+    --kb-bg-soft: #fff1f5;
+    --kb-surface: #ffffff;
+    --kb-surface-soft: #fff7f9;
+    --kb-pink: #d84d82;
+    --kb-pink-dark: #a93160;
+    --kb-primary: var(--kb-pink);
+    --kb-primary-dark: var(--kb-pink-dark);
+    --kb-primary-light: #f3bfd4;
+    --kb-rose: #c78ca0;
+    --kb-plum: #3b1734;
+    --kb-text: #33242f;
+    --kb-text-muted: #806976;
+    --kb-muted: var(--kb-text-muted);
+    --kb-border: #ecd8df;
+    --kb-success: #397957;
+    --kb-warning: #9b6e21;
+    --kb-danger: #a94454;
+    --kb-info: #5c7099;
+    --kb-radius-sm: 10px;
+    --kb-radius-md: 16px;
+    --kb-radius-lg: 20px;
+    --kb-radius-xl: 26px;
+    --kb-shadow-sm: 0 3px 14px rgba(66, 27, 47, 0.05);
+    --kb-shadow-md: 0 12px 30px rgba(66, 27, 47, 0.08);
+    --kb-font: var(--font-primary);
+    --kb-control-h: 46px;
+    --kb-control-h-sm: 42px;
+    --kb-container: 1240px;
+    --kb-space-xs: 4px;
+    --kb-space-sm: 8px;
+    --kb-space-md: 16px;
+    --kb-space-lg: 24px;
+    --kb-space-xl: 32px;
+
+    /* ─── Radius (12–16px spec) ─── */
+    --radius-sm: 12px;
+    --radius-md: 14px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-btn: 12px;
+    --radius-pill: 999px;
+
+    /* ─── Shadows (soft, never heavy) ─── */
+    --shadow-soft: 0 2px 16px rgba(44, 30, 33, 0.04);
+    --shadow-medium: 0 6px 28px rgba(44, 30, 33, 0.06);
+    --shadow-luxury: 0 12px 40px rgba(44, 30, 33, 0.08);
+    --shadow-glow-rose: 0 4px 20px rgba(252, 215, 215, 0.45);
+    --shadow-glow-gold: 0 4px 16px rgba(199, 140, 160, 0.2);
+
+    /* ─── Gradients ─── */
+    --gradient-cream: linear-gradient(180deg, var(--alabaster) 0%, var(--ballet-blush) 100%);
+    --gradient-hero: linear-gradient(145deg, var(--ballet-blush) 0%, var(--alabaster) 55%, var(--white) 100%);
+    --gradient-rose: linear-gradient(135deg, var(--coquette-pink) 0%, var(--antique-rose) 100%);
+    --gradient-gold: linear-gradient(135deg, var(--coquette-pink), var(--antique-rose-deep));
+    --gradient-accent-bar: linear-gradient(90deg, var(--coquette-pink), var(--antique-rose));
+
+    /* ─── CTA ─── */
+    --cta-bg: var(--coquette-pink);
+    --cta-text: var(--espresso);
+
+    /* ─── Motion ─── */
+    --ease-luxury: cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-fast: 0.22s ease;
+    --transition-smooth: 0.4s var(--ease-luxury);
+
+    /* ─── Layout ─── */
+    --sidebar-width: 280px;
+    --sidebar-width-admin: 260px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-primary);
+}
+
+/* Form controls default to the UA font unless told otherwise; inherit Poppins
+   instead. Font Awesome icons are unaffected because they set their own
+   font-family on the .fa/.fas elements. */
+button,
+input,
+select,
+textarea,
+optgroup {
+    font-family: inherit;
+}
+
+/* ─── Shared Utilities ─── */
+.font-serif { font-family: var(--font-serif); }
+.font-display { font-family: var(--font-display); }
+.text-muted { color: var(--text-muted); }
+.text-espresso { color: var(--espresso); }
+
+.label-micro {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--dusty-rose);
+}
+
+.section-title-elegant {
+    font-family: var(--font-serif);
+    font-size: 1.65rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: var(--espresso);
+    letter-spacing: -0.02em;
+}
+
+.section-sub-elegant {
+    color: var(--dusty-rose);
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+/* ─── Primary & Secondary Buttons (Global) ───
+   One button language for the whole system: the primary action is the rose
+   gradient with white text (same as Sign In / Sign Up), the secondary action
+   is a white surface with a rose border and plum text. */
+.btn-primary-coquette,
+.btn-luxury-rose {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: var(--kb-control-h);
+    padding: 12px 26px;
+    border-radius: var(--kb-radius-sm);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.3px;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--kb-pink), var(--kb-pink-dark));
+    color: var(--white);
+    transition: var(--transition-fast);
+    box-shadow: 0 8px 18px rgba(169, 49, 96, 0.2);
+}
+
+.btn-primary-coquette:hover,
+.btn-luxury-rose:hover {
+    background: linear-gradient(135deg, #e85b93, var(--kb-pink-dark));
+    transform: translateY(-1px);
+    box-shadow: var(--kb-shadow-md);
+}
+
+.btn-secondary-coquette,
+.btn-luxury-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: var(--kb-control-h);
+    padding: 11px 24px;
+    border-radius: var(--kb-radius-sm);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: var(--kb-surface);
+    color: var(--kb-plum);
+    border: 1px solid var(--kb-border);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-secondary-coquette:hover,
+.btn-luxury-outline:hover {
+    background: var(--kb-bg-soft);
+    border-color: var(--kb-primary-light);
+}
+
+/* ─── Forms ─── */
+.form-label-luxury {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--dusty-rose);
+    margin-bottom: 7px;
+}
+
+.input-luxury {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--dusty-rose);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    background: var(--white);
+    color: var(--espresso);
+    transition: var(--transition-fast);
+}
+
+.input-luxury:focus {
+    outline: none;
+    border-color: var(--antique-rose-deep);
+    box-shadow: 0 0 0 3px rgba(252, 215, 215, 0.5);
+    background: var(--white);
+}
+
+.input-luxury::placeholder { color: rgba(166, 123, 136, 0.65); }
+
+/* Keyboard focus remains visible across all three portals. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid rgba(216, 77, 130, 0.34);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ─── Decorative ─── */
+.coquette-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0;
+    color: var(--dusty-rose);
+    font-size: 0.72rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.coquette-divider::before,
+.coquette-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--antique-rose), transparent);
+}
+
+.pearl-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--white), var(--antique-rose));
+    box-shadow: 0 1px 3px rgba(44, 30, 33, 0.1);
+}
+
+/* ─── Toasts ─── */
+#toast-container,
+#toastContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 360px;
+    width: 100%;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    color: var(--espresso);
+    font-weight: 500;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-medium);
+    animation: toastSlideIn 0.45s var(--ease-luxury) forwards;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--ballet-blush);
+    border: 1px solid var(--border-light);
+}
+
+.toast-success { background: var(--soft-sage); border-color: rgba(90, 125, 98, 0.3); }
+.toast-error { background: var(--error-bg); border-color: rgba(158, 74, 74, 0.25); }
+.toast-warning { background: var(--warning-bg); }
+
+@keyframes toastSlideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes floatSoft {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2.5px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.65s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+}

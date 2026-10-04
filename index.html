@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>K-Beauty Salon · Sign In</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="icon" type="image/png" href="images/kb-logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/mobile.css">
+    <link rel="stylesheet" href="css/kb-ui.css">
+</head>
+<body class="auth-page-bg auth-page-bg--login">
+
+    <div class="auth-ribbon">K-Beauty Salon & Aesthetic</div>
+
+    <div class="split-auth-container">
+        <div class="split-image-panel">
+            <div class="split-image-caption">
+                <p class="split-image-eyebrow">K-Beauty Salon &amp; Aesthetic</p>
+                <h1>Welcome</h1>
+                <p>K-Beauty Salon & Aesthetic · San Pablo City, Laguna</p>
+            </div>
+        </div>
+
+        <div class="split-form-panel">
+            <div class="split-form-header">
+                <img src="images/kb-logo.png" alt="K-Beauty Salon Logo" class="auth-logo-img">
+                <p class="brand-tagline">Salon Management System</p>
+                <h2>Welcome back, beautiful</h2>
+                <p>Sign in to your portal — email verification required after login</p>
+            </div>
+
+            <div class="auth-message" id="login-message" style="display:none;"></div>
+
+            <form id="login-form">
+                <div class="form-group-clean">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="input-line" placeholder="hello@example.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group-clean">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="input-line" placeholder="Enter your password" required autocomplete="current-password">
+                    <i class="fa-regular fa-eye toggle-password" data-target="password"></i>
+                </div>
+
+                <div class="auth-options-row">
+                    <label>
+                        <input type="checkbox" id="remember-me"> Remember me
+                    </label>
+                    <a href="#" id="forgot-password-link">Forgot password?</a>
+                </div>
+
+                <button type="submit" id="login-btn" class="btn-auth-pink">Sign In</button>
+            </form>
+
+            <p class="auth-footer-text">
+                New here? <a href="register.html">Create an account</a>
+            </p>
+            <a href="home.html" class="auth-back-home">&larr; Back to website</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { handleLogin, handleForgotPassword, routeUserAfterMfa, showAuthMessage, hideAuthMessage } from "./js/login.js";
+        import { clearMfaSession } from "./js/auth-guard.js";
+
+        clearMfaSession();
+
+        const loginForm = document.getElementById("login-form");
+        const loginBtn = document.getElementById("login-btn");
+        const messageEl = document.getElementById("login-message");
+
+        document.getElementById("forgot-password-link").addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+                const msg = await handleForgotPassword(document.getElementById("email").value.trim());
+                showAuthMessage(messageEl, msg, "success");
+            } catch (err) {
+                showAuthMessage(messageEl, err.message, "error");
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            const toggleIcon = e.target.closest(".toggle-password");
+            if (toggleIcon) {
+                const input = document.getElementById(toggleIcon.dataset.target || "password");
+                if (!input) return;
+                const show = input.type === "password";
+                input.type = show ? "text" : "password";
+                toggleIcon.classList.toggle("fa-eye", !show);
+                toggleIcon.classList.toggle("fa-eye-slash", show);
+            }
+        });
+
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            hideAuthMessage(messageEl);
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Signing in…";
+
+            try {
+                const result = await handleLogin(
+                    document.getElementById("email").value.trim(),
+                    document.getElementById("password").value
+                );
+                if (result.requiresMfa) {
+                    const codeNote = result.otpCode
+                        ? ` Your code: ${result.otpCode} (also on the next page).`
+                        : " Your code will be shown on the next page.";
+                    showAuthMessage(messageEl, "Verification required." + codeNote, "success");
+                    setTimeout(() => { window.location.href = result.redirect; }, 1200);
+                } else {
+                    routeUserAfterMfa(result.uid, result.role);
+                }
+            } catch (error) {
+                console.error("Login Error:", error);
+                showAuthMessage(messageEl, error.message || "Login failed.", "error");
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Sign In";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             getUserRole() == "Admin";
+    }
+
+    function isStaffRole() {
+      return isSignedIn() && (
+        getUserRole() == "Staff" ||
+        getUserRole() == "Stylist" ||
+        getUserRole() == "Receptionist" ||
+        getUserRole() == "General Staff" ||
+        getUserRole() == "Manager"
+      );
+    }
+
+    function isAppointmentOwner() {
+      return resource.data.clientId == request.auth.uid ||
+             resource.data.clientUid == request.auth.uid;
+    }
+
+    function isCashReservation() {
+      return request.resource.data.reservationPaymentMethod == 'cash';
+    }
+
+    function isQrReservation() {
+      return request.resource.data.reservationPaymentMethod == 'qr';
+    }
+
+    function hasPaymentProof() {
+      return request.resource.data.keys().hasAny(['paymentProofURL']) &&
+             request.resource.data.paymentProofURL is string &&
+             request.resource.data.paymentProofURL.size() > 0;
+    }
+
+    function hasValidQrReservationDetails() {
+      return request.resource.data.reservationPaymentStatus == 'awaiting-verification' &&
+             request.resource.data.reservationReference is string &&
+             request.resource.data.reservationReference.size() > 0 &&
+             request.resource.data.reservationReference.size() <= 100;
+    }
+
+    // Staff/stylist profiles the Client portal may read to build the stylist
+    // picker. Rule is ROLE-based (not `deleted`) so the client's
+    // `where("role","in",[staff roles])` query is statically provable by
+    // Firestore — rules cannot guarantee `deleted != true` across a role
+    // filter, and a deactivated account cannot sign in anyway. The Client
+    // portal filters out `deleted === true` docs in JS before rendering.
+    function isBookableStaffData(data) {
+      return data.role in ["Staff", "Stylist", "Receptionist", "General Staff", "Manager", "staff"];
+    }
+
+    // A user may update their own profile but never promote themselves or
+    // deactivate their own account.
+    function isSafeSelfUpdate() {
+      let affected = request.resource.data.diff(resource.data).affectedKeys();
+      return !affected.hasAny(['role', 'deleted', 'deletedAt', 'deletedBy']);
+    }
+
+    // Clients may only create pending appointments with no operational/archive
+    // state. QR reservations require an uploaded payment proof; Cash pays at
+    // the salon. These are the only payment methods clients can create. Past-date and
+    // slot-overlap checks run client-side (rules cannot safely compare string
+    // dates to request.time, and cannot query other documents) — the slotBlocks
+    // index enforces overlaps server-side.
+    function isValidClientCreate() {
+      return request.resource.data.status == 'Pending' &&
+             !request.resource.data.keys().hasAny(['archived', 'operationalStatus', 'checkedInAt']) &&
+             ((isCashReservation() && request.resource.data.reservationPaymentStatus == 'pay-at-salon') ||
+              (isQrReservation() && hasPaymentProof() && hasValidQrReservationDetails()));
+    }
+
+    function isValidClientReservationTransaction() {
+      return request.resource.data.paymentType == 'reservation' &&
+             request.resource.data.paymentMethod in ['qr', 'cash'] &&
+             ((request.resource.data.paymentMethod == 'qr' &&
+               request.resource.data.paymentStatus == 'awaiting-verification' &&
+               request.resource.data.referenceNumber is string &&
+               request.resource.data.referenceNumber.size() > 0 &&
+               request.resource.data.referenceNumber.size() <= 100) ||
+              (request.resource.data.paymentMethod == 'cash' &&
+               request.resource.data.paymentStatus == 'pay-at-salon'));
+    }
+
+    // Clients may reschedule or request cancellation, but may not touch
+    // identity, payment, archive or operational fields. Past dates are
+    // validated client-side only (string dates can't be compared to
+    // request.time in rules).
+    function isValidClientUpdate() {
+      let affected = request.resource.data.diff(resource.data).affectedKeys();
+      let changed = request.resource.data.diff(resource.data).changedKeys();
+      return !affected.hasAny([
+              'clientId', 'clientUid', 'clientName', 'clientEmail',
+               'reservationFee', 'reservationFeePaid', 'reservationPaymentMethod',
+               'reservationReference', 'reservationPaymentStatus', 'reservationPaidAt', 'receiptURL',
+               'receiptStoragePath', 'balanceDue', 'balancePaid', 'archived',
+               'operationalStatus', 'checkedInAt', 'createdAt', 'category',
+               'paymentProofURL', 'paymentProofStoragePath', 'paymentProofUploadedAt', 'paymentProofStatus',
+               'paymentVerifiedAt', 'paymentVerifiedBy', 'paymentRejectedAt', 'paymentRejectedBy'
+            ]) &&
+            (changed.hasAny(['status', 'cancellationReason']) ?
+              request.resource.data.status == 'Cancellation Requested' : true);
+    }
+
+    // -------------------------------------------------------------
+    // USERS
+    // -------------------------------------------------------------
+    match /users/{userId} {
+      allow read: if isSignedIn() && (
+        request.auth.uid == userId || isAdmin() || isStaffRole() || isBookableStaffData(resource.data)
+      );
+      allow create: if isSignedIn() && (
+        (request.auth.uid == userId && request.resource.data.role == "Client") || isAdmin()
+      );
+      allow update: if isSignedIn() && (
+        (request.auth.uid == userId && isSafeSelfUpdate()) || isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // SERVICES
+    // -------------------------------------------------------------
+    match /services/{serviceId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // APPOINTMENTS
+    // -------------------------------------------------------------
+    match /appointments/{appointmentId} {
+      allow read: if isSignedIn() && (
+        isAppointmentOwner() ||
+        resource.data.staffUid == request.auth.uid ||
+        isAdmin() ||
+        isStaffRole()
+      );
+
+      allow create: if isSignedIn() && (
+        (
+          (request.resource.data.clientId == request.auth.uid ||
+           request.resource.data.clientUid == request.auth.uid) &&
+          isValidClientCreate()
+        ) ||
+        isAdmin() ||
+        isStaffRole()
+      );
+
+      allow update: if isSignedIn() && (
+        (
+          isAppointmentOwner() && isValidClientUpdate()
+        ) ||
+        resource.data.staffUid == request.auth.uid ||
+        isAdmin() ||
+        isStaffRole()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // SYSTEM SETTINGS
+    // Signed-in clients may read the QR payment configuration; only
+    // administrators may create or modify it.
+    // -------------------------------------------------------------
+    match /systemSettings/{settingId} {
+      allow read: if isSignedIn() && settingId == 'qrPayment';
+      allow write: if isAdmin() && settingId == 'qrPayment';
+    }
+
+    // Multi-provider QR payment options (GCash, Maya, BPI QR, …).
+    // Every option is its own document so several base64 QR images are never
+    // stored in a single Firestore document, which keeps each one comfortably
+    // below Firestore's document-size limit. Clients may only read this
+    // subcollection; administrators create, update and delete the options.
+    match /systemSettings/qrPayment/providers/{providerId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // INVENTORY
+    // -------------------------------------------------------------
+    match /inventory/{itemId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // SLOT BLOCKS (public stylist-availability index)
+    // Stores only time/staff overlap data, no client PII. Readable by any
+    // signed-in user so Clients can see which stylists are busy; writers are
+    // limited to the creator (their own appointments), staff, and admins.
+    // -------------------------------------------------------------
+    match /slotBlocks/{blockId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && (
+        request.resource.data.createdBy == request.auth.uid || isAdmin() || isStaffRole()
+      );
+      allow update, delete: if isSignedIn() && (
+        resource.data.createdBy == request.auth.uid || isAdmin() || isStaffRole()
+      );
+    }
+
+    // -------------------------------------------------------------
+    // NOTIFICATIONS
+    // -------------------------------------------------------------
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn() && (
+        resource.data.recipientId == request.auth.uid ||
+        resource.data.recipientId == "admin" && isAdmin() ||
+        resource.data.recipientId == "staff" && isStaffRole()
+      );
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && (
+        resource.data.recipientId == request.auth.uid ||
+        resource.data.recipientId == "staff" && isStaffRole() ||
+        isAdmin()
+      );
+      allow delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // TRANSACTIONS
+    // -------------------------------------------------------------
+    match /transactions/{transactionId} {
+      allow read: if isSignedIn() && (isAdmin() || isStaffRole());
+      // Clients record their own reservation-payment transaction on booking.
+      allow create: if isSignedIn() && (
+        ((request.resource.data.clientId == request.auth.uid ||
+          request.resource.data.clientUid == request.auth.uid) &&
+         isValidClientReservationTransaction()) ||
+        isAdmin() ||
+        isStaffRole()
+      );
+      allow update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // STYLIST SCHEDULES
+    // -------------------------------------------------------------
+    match /stylistSchedules/{stylistId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin() || isStaffRole();
+    }
+
+    // -------------------------------------------------------------
+    // PAYROLL (sensitive employee compensation data)
+    // Payroll is strictly Admin-only. Staff members cannot enumerate or
+    // access one another's compensation, and no client access is granted.
+    // -------------------------------------------------------------
+    match /payrollSettings/{staffUid} {
+      allow read, write: if isAdmin();
+    }
+
+    match /payrollRecords/{payrollId} {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // CLIENT NOTES (staff operational notes)
+    // -------------------------------------------------------------
+    match /clientNotes/{noteId} {
+      allow read: if isStaffRole() || isAdmin();
+      allow create, update: if isStaffRole() || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // -------------------------------------------------------------
+    // WAITING LIST
+    // -------------------------------------------------------------
+    match /waitingList/{entryId} {
+      allow read, write: if isStaffRole() || isAdmin();
+    }
+
+    match /loginAttempts/{attemptId} {
+      allow read, create, update, delete: if true;
+    }
+  }
+}

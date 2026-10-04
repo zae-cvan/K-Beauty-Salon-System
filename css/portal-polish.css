@@ -1,0 +1,255 @@
+/* K-Beauty portal presentation layer — loaded only by client, staff, and admin pages. */
+
+/* The --kb-* design tokens now live in design-tokens.css (imported by every
+   portal stylesheet), so there is a single source of truth for the whole
+   application. This file only applies the portal shell styling. */
+
+:where(.client-body, .staff-app, .admin-portal) {
+    background: var(--kb-bg);
+    color: var(--kb-text);
+    font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(h1, h2, .section-title, .section-heading, .page-title) {
+    color: var(--kb-plum);
+    font-family: var(--font-serif, sans-serif);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+}
+
+/* Shells and navigation */
+.client-body .sidebar,
+.admin-portal .sidebar,
+.staff-app .staff-sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #fff8fb 100%);
+    border-color: var(--kb-border);
+    box-shadow: 8px 0 24px rgba(66, 27, 47, 0.035);
+}
+
+.client-body .sidebar-nav .nav-item,
+.staff-app .sidebar-link,
+.admin-portal .sidebar-nav a { border-radius: var(--kb-radius-sm); }
+
+.client-body .sidebar-nav .nav-item.active,
+.staff-app .sidebar-link.active,
+.admin-portal .sidebar-nav a.active {
+    background: var(--kb-bg-soft);
+    color: var(--kb-pink-dark);
+    box-shadow: inset 3px 0 0 var(--kb-pink);
+}
+
+.client-body .main-header,
+.staff-app .staff-topbar,
+.admin-portal .topbar {
+    border-color: var(--kb-border);
+    background: rgba(255, 250, 252, 0.9);
+    backdrop-filter: blur(14px);
+}
+
+.client-body .main-content,
+.staff-app .staff-shell,
+.admin-portal .main-content { background: var(--kb-bg); }
+
+/* Shared surfaces */
+:where(.client-body, .staff-app, .admin-portal) :is(.glass-card, .kpi-card, .stat-card, .service-card, .appointment-card, .dashboard-card, .section-card, .report-card, .inventory-summary-card) {
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-lg);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(.glass-card, .kpi-card, .stat-card, .service-card, .appointment-card, .dashboard-card, .section-card, .report-card, .inventory-summary-card):hover {
+    box-shadow: var(--kb-shadow-md);
+}
+
+/* Controls retain all existing IDs and event bindings. */
+:where(.client-body, .staff-app, .admin-portal) :is(.btn-primary, .btn-action.btn-accent) {
+    min-height: 42px;
+    border-radius: var(--kb-radius-sm);
+    background: linear-gradient(135deg, var(--kb-pink), var(--kb-pink-dark));
+    color: #ffffff;
+    box-shadow: 0 7px 16px rgba(169, 49, 96, 0.18);
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(.btn-primary, .btn-action.btn-accent):hover {
+    background: linear-gradient(135deg, #e85b93, var(--kb-pink-dark));
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(.btn-secondary, .btn-outline) {
+    min-height: 42px;
+    border-color: var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], input[type="password"], select, textarea) {
+    border-color: var(--kb-border);
+    border-radius: var(--kb-radius-sm);
+    color: var(--kb-text);
+    font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], input[type="password"], select, textarea):focus {
+    border-color: var(--kb-pink);
+    box-shadow: 0 0 0 3px rgba(216, 77, 130, 0.14);
+    outline: none;
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(button, a, input, select, textarea):focus-visible {
+    outline: 3px solid rgba(216, 77, 130, 0.28);
+    outline-offset: 2px;
+}
+
+/* Tables, status badges, and data-heavy views */
+:where(.client-body, .staff-app, .admin-portal) .table-wrap {
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    background: var(--kb-surface);
+    box-shadow: var(--kb-shadow-sm);
+    -webkit-overflow-scrolling: touch;
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(.custom-table, .staff-table) th {
+    background: var(--kb-bg-soft);
+    color: var(--kb-text-muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.055em;
+}
+
+:where(.client-body, .staff-app, .admin-portal) :is(.custom-table, .staff-table) td { border-color: var(--kb-border); }
+
+:where(.client-body, .staff-app, .admin-portal) :is(.status-badge, .badge, .status-pill) {
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+/* Modals preserve their existing open/close classes and scripts. */
+.client-body .modal-content,
+.staff-app .staff-modal,
+.admin-portal .modal-content {
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-lg);
+    box-shadow: 0 20px 54px rgba(59, 23, 52, 0.18);
+}
+
+.client-body .modal-header,
+.staff-app .modal-header,
+.admin-portal .modal-content .modal-header { border-bottom-color: var(--kb-border); }
+
+.client-body .modal-overlay,
+.staff-app .staff-modal-overlay,
+.admin-portal .modal-overlay { padding: 12px; }
+
+/* Responsive guardrails for portal layouts, forms, tables, and dialogs. */
+@media (max-width: 1024px) {
+    :where(.client-body, .staff-app, .admin-portal) :is(.dashboard-grid, .dashboard-split, .stats-grid, .kpi-grid, .form-row, .form-grid) { gap: 16px; }
+}
+
+@media (max-width: 768px) {
+    .client-body .main-content,
+    .staff-app .staff-shell,
+    .admin-portal .main-content { padding-inline: 16px; }
+
+    :where(.client-body, .staff-app, .admin-portal) :is(.modal-content, .staff-modal) {
+        width: calc(100% - 24px);
+        max-height: 90vh;
+    }
+
+    :where(.client-body, .staff-app, .admin-portal) .table-wrap { border-radius: var(--kb-radius-sm); }
+}
+
+@media (max-width: 576px) {
+    :where(.client-body, .staff-app, .admin-portal) :is(.btn-primary, .btn-secondary, .btn-outline, .btn-action) { min-height: 44px; }
+
+    :where(.client-body, .staff-app, .admin-portal) :is(input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="time"], input[type="password"], select) { min-height: 44px; }
+}
+
+/* ────────────────────────────────────────────────────────
+   Presentation upgrades — shared across the three portals.
+   Purely visual: nothing here changes IDs, classes used by
+   scripts, or any interactive behaviour.
+   ──────────────────────────────────────────────────────── */
+
+/* Branded text selection */
+:where(.client-body, .staff-app, .admin-portal) ::selection {
+    background: rgba(216, 77, 130, 0.18);
+    color: var(--kb-plum);
+}
+
+/* Slim, consistent scrollbars (Chromium + Firefox) */
+:where(.client-body, .staff-app, .admin-portal) {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(166, 123, 136, 0.45) transparent;
+}
+:where(.client-body, .staff-app, .admin-portal) ::-webkit-scrollbar { width: 8px; height: 8px; }
+:where(.client-body, .staff-app, .admin-portal) ::-webkit-scrollbar-track { background: transparent; }
+:where(.client-body, .staff-app, .admin-portal) ::-webkit-scrollbar-thumb {
+    background: rgba(166, 123, 136, 0.4);
+    border-radius: 8px;
+}
+:where(.client-body, .staff-app, .admin-portal) ::-webkit-scrollbar-thumb:hover {
+    background: rgba(166, 123, 136, 0.65);
+}
+
+/* Fill the real mobile viewport (URL-bar aware height) */
+.client-body .main-content,
+.admin-portal .main-content,
+.staff-app .staff-shell { min-height: 100dvh; }
+
+/* The staff hero heart keeps the ♡ motif as a crisp vector glyph */
+.hero-heart {
+    display: inline-block;
+    font-size: 0.5em;
+    color: var(--kb-pink);
+    vertical-align: middle;
+    transform: translateY(-2px);
+}
+
+/* Friendly placeholder for the containers the dashboards fill with JS.
+   The delay means it never flashes while real data is still loading —
+   it only appears when the container is still empty a moment later. */
+:is(#staffKpiGrid, #opsSummaryGrid, #todayApptList, #dashboardWaitingList,
+    #upcomingAppointments, #recentTransactions, #servicesContainer):empty::after {
+    content: 'Nothing to show here yet';
+    display: block;
+    text-align: center;
+    padding: 26px 16px;
+    font-size: 0.85rem;
+    color: var(--kb-text-muted);
+    background: var(--kb-bg-soft);
+    border: 1.5px dashed var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    animation: kbEmptyIn 0.5s ease 0.9s both;
+}
+#staffKpiGrid:empty::after,
+#opsSummaryGrid:empty::after { grid-column: 1 / -1; }
+
+@keyframes kbEmptyIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Phone-sized dialogs rise from the bottom like native sheets */
+@media (max-width: 576px) {
+    .client-body .modal-overlay,
+    .admin-portal .modal-overlay,
+    .staff-app .staff-modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .client-body .modal-content,
+    .admin-portal .modal-content,
+    .staff-app .staff-modal {
+        width: 100%;
+        max-width: none;
+        max-height: 92dvh;
+        border-radius: 22px 22px 0 0;
+        margin: 0;
+        animation: kbSheetUp 0.32s var(--ease-luxury);
+    }
+}
+
+@keyframes kbSheetUp {
+    from { transform: translateY(30px); opacity: 0.4; }
+    to { transform: translateY(0); opacity: 1; }
+}

@@ -1,0 +1,207 @@
+/* =============================================================
+   K-BEAUTY — shared mobile hardening
+   Loaded LAST on every page. Everything here is scoped to phone /
+   small-tablet widths, so the desktop design is left untouched.
+
+   Rules only cover problems that are real on a handset:
+     1. iOS zoom-on-focus
+     2. Touch targets below the comfortable 44px minimum
+     3. Type smaller than ~12px, which is unreadable on a phone
+     4. Notch / home-indicator safe areas
+
+   `!important` is used deliberately in the readability and iOS-zoom
+   blocks: the component stylesheets set these values on class
+   selectors (sometimes themselves `!important`) that would otherwise
+   win. This layer exists precisely to take precedence over them at
+   phone widths.
+   ============================================================= */
+
+/* ── iOS: stop automatic text inflation after an orientation change ── */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+@media (max-width: 768px) {
+
+    /* ── 1. iOS zooms the entire page when a focused control computes
+           below 16px, which throws the layout off mid-typing. ───────── */
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    /* Long emails / names must wrap rather than widen the page. */
+    body { overflow-wrap: break-word; }
+
+    /* ── 2. Touch targets ─────────────────────────────────────────── */
+
+    /* Icon-only controls need a real hit area in both directions. */
+    .nav-toggle,
+    .hamburger,
+    .sidebar-toggle,
+    .topbar-icon-btn,
+    .notif-panel-close,
+    .cal-nav-btn,
+    .modal-close,
+    .terms-close-btn,
+    .avatar {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    /* Full-width, row and block controls only need the vertical minimum. */
+    .nav-brand,
+    .nav-item,
+    .sidebar-link,
+    .sidebar-nav a,
+    .staff-tab,
+    .view-profile-btn,
+    .overview-view-toggle-btn,
+    .seg-btn,
+    .btn-reserve,
+    .btn-reserve-secondary,
+    .btn-cancel,
+    .btn-reschedule,
+    .pick-book-btn,
+    .btn-action-sm,
+    .btn-sm,
+    .btn-action,
+    .book-btn,
+    .btn-primary-coquette,
+    .logout-btn-sidebar,
+    .filter-chip {
+        min-height: 44px;
+    }
+
+    /* Text fields are fiddly to tap when they are shorter than this. */
+    input:not([type="checkbox"]):not([type="radio"]):not(.otp-digit),
+    select,
+    textarea {
+        min-height: 44px;
+    }
+
+    /* Primary navigation lists — mobile drawer and footer. */
+    .mobile-nav a {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+    }
+
+    .mobile-nav .nav-cta { justify-content: center; }
+
+    .nav-links a,
+    .footer-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    /* Standalone text links sitting on their own line. */
+    .view-all,
+    .btn-text-link,
+    .auth-back-home,
+    .auth-options-row a,
+    .link-btn,
+    .terms-link-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    /* A checkbox is far too small on its own; make the whole label row
+       the tap target and give the box itself a more legible size. */
+    .auth-options-row label,
+    .terms-checkbox {
+        min-height: 44px;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"],
+    .terms-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* ── 3. Mobile bottom navigation ──────────────────────────────── */
+
+    /* Stretch the items across the bar instead of letting them collapse
+       to their content height, and clear the home indicator. */
+    .bottom-nav {
+        height: calc(68px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .bottom-nav .nav-item {
+        align-self: stretch;
+        font-size: 0.72rem !important;
+    }
+
+    .client-body .main-content {
+        padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* ── 4. Safe areas for the sticky top chrome on notched devices ── */
+    .main-header,
+    .staff-topbar,
+    .sidebar,
+    .staff-sidebar {
+        padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    /* ── 5. Readable type. The design system sets labels, badges and
+           small buttons between 0.5rem and 0.72rem (8–11.5px), which is
+           unreadable on a handset. Raise only those smallest styles. ── */
+    label,
+    .label,
+    .label-optional,
+    .lbl,
+    .role,
+    .badge,
+    .badge-admin,
+    .sidebar-brand .badge-admin,
+    .section-tag,
+    .hero-tag,
+    .hero-label,
+    .topbar-label,
+    .hero-greeting,
+    .kpi-label,
+    .brand-tagline,
+    .sidebar-tagline,
+    .sidebar-badge,
+    .sidebar-portal-badge,
+    .auth-ribbon,
+    .month,
+    .badge-confirmed,
+    .view-profile-btn,
+    .btn-cancel,
+    .btn-reschedule,
+    .pick-book-btn {
+        font-size: 0.75rem !important;
+    }
+
+    /* Calendar grids are tight, so they get a slightly smaller floor. */
+    .weekday,
+    .cal-weekdays span {
+        font-size: 0.6875rem !important;
+    }
+}
+
+/* ── Very small phones: reclaim horizontal space from big gutters ── */
+@media (max-width: 400px) {
+
+    .client-body .main-content,
+    .staff-app .staff-shell,
+    .admin-portal .main-content {
+        padding-inline: 12px;
+    }
+
+    /* Keep the full-bleed sticky header aligned with the tighter gutters. */
+    .client-body .main-header {
+        margin-left: -12px;
+        margin-right: -12px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}

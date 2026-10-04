@@ -1,0 +1,338 @@
+/* =============================================================
+   K-BEAUTY — SHARED UI SYSTEM LAYER
+   =============================================================
+   Loaded LAST on every page (landing, sign in, sign up, admin, staff,
+   client) so the whole application shares one component language:
+   cards, buttons, forms, tables, badges, toasts, empty states, modals
+   and motion.
+
+   Everything here builds on the --kb-* tokens defined in
+   design-tokens.css. This file is purely presentational — no IDs, data
+   attributes, event handlers or business logic are touched, and it sets
+   no `!important` (other than the accessibility block at the end), so
+   page-specific styling that is more specific always wins. That is what
+   keeps the already-approved Sign In card and Sign Up layout intact.
+   ============================================================= */
+
+/* ─────────────────────────────────────────────
+   1. CARDS — one radius / border / shadow language
+   ───────────────────────────────────────────── */
+.glass-card,
+.kpi-card,
+.stat-card,
+.dashboard-card,
+.section-card,
+.report-card,
+.inventory-summary-card,
+.service-card,
+.appointment-card,
+.service-card-pub,
+.testimonial-card,
+.contact-form-card,
+.hero-float-card,
+.profile-card,
+.customer-profile-card,
+.otp-card,
+.qr-settings-card {
+    border-radius: var(--kb-radius-lg);
+    border: 1px solid var(--kb-border);
+    box-shadow: var(--kb-shadow-sm);
+}
+
+/* Card titles share one weight + colour. */
+.glass-card .card-header h3,
+.card-title,
+.section-card h3,
+.report-card h3 {
+    font-weight: 600;
+    color: var(--kb-plum);
+}
+
+/* ─────────────────────────────────────────────
+   2. BUTTONS — consistent shapes and states
+   ───────────────────────────────────────────── */
+.btn-primary,
+.btn-secondary,
+.btn-outline {
+    min-height: var(--kb-control-h-sm);
+    border-radius: var(--kb-radius-sm);
+    font-family: var(--kb-font);
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.btn-secondary {
+    background: var(--kb-surface);
+    color: var(--kb-plum);
+    border: 1px solid var(--kb-border);
+}
+
+.btn-secondary:hover {
+    background: var(--kb-bg-soft);
+    border-color: var(--kb-primary-light);
+}
+
+.btn-outline {
+    background: var(--kb-surface);
+    color: var(--kb-primary-dark);
+    border: 1px solid var(--kb-primary-light);
+}
+
+.btn-outline:hover {
+    background: var(--kb-bg-soft);
+}
+
+.btn-success-sm {
+    background: #e6f7ee;
+    color: var(--kb-success);
+    border: 1px solid rgba(57, 121, 87, 0.18);
+    border-radius: var(--kb-radius-sm);
+}
+
+.btn-danger-sm {
+    background: #fdeaea;
+    color: var(--kb-danger);
+    border: 1px solid rgba(169, 68, 84, 0.18);
+    border-radius: var(--kb-radius-sm);
+}
+
+.btn-warning-sm {
+    background: #fdf3e2;
+    color: var(--kb-warning);
+    border: 1px solid rgba(155, 110, 33, 0.18);
+    border-radius: var(--kb-radius-sm);
+}
+
+/* ─────────────────────────────────────────────
+   3. TABLES — one container and row treatment
+   ───────────────────────────────────────────── */
+.table-wrap,
+.table-responsive {
+    background: var(--kb-surface);
+    border: 1px solid var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    box-shadow: var(--kb-shadow-sm);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.custom-table th,
+.staff-table th {
+    background: var(--kb-bg-soft);
+    color: var(--kb-text-muted);
+    font-weight: 600;
+    letter-spacing: 0.045em;
+}
+
+.custom-table td,
+.staff-table td {
+    border-bottom: 1px solid var(--kb-border);
+    color: var(--kb-text);
+}
+
+.custom-table tr:last-child td,
+.staff-table tr:last-child td {
+    border-bottom: none;
+}
+
+.custom-table tbody tr:hover td,
+.staff-table tbody tr:hover td {
+    background: var(--kb-surface-soft);
+}
+
+/* ─────────────────────────────────────────────
+   4. BADGES — one pill system, soft token tints
+   (state class names are preserved exactly)
+   ───────────────────────────────────────────── */
+.status-badge,
+.badge,
+.status-pill,
+.role-badge {
+    border-radius: 999px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    font-family: var(--kb-font);
+}
+
+.status-badge.active,
+.status-badge.in-stock,
+.status-badge.served,
+.status-badge.paid,
+.status-badge.verified {
+    background: #e6f7ee;
+    color: var(--kb-success);
+}
+
+.status-badge.pending,
+.status-badge.medium,
+.status-badge.cancellation-requested,
+.status-badge.unpaid {
+    background: #fdf3e2;
+    color: var(--kb-warning);
+}
+
+.status-badge.cancelled,
+.status-badge.low,
+.status-badge.critical,
+.status-badge.rejected,
+.status-badge.out-of-stock {
+    background: #fdeaea;
+    color: var(--kb-danger);
+}
+
+.status-badge.completed,
+.status-badge.confirmed {
+    background: #eaf0fa;
+    color: var(--kb-info);
+}
+
+.status-badge.no-show,
+.status-badge.inactive {
+    background: #f2eef1;
+    color: var(--kb-text-muted);
+}
+
+.role-badge {
+    background: #f2eef1;
+    color: var(--kb-text-muted);
+}
+
+.role-badge.admin {
+    background: #fdeaea;
+    color: var(--kb-danger);
+}
+
+.role-badge.staff {
+    background: #eaf0fa;
+    color: var(--kb-info);
+}
+
+.role-badge.client {
+    background: #e6f7ee;
+    color: var(--kb-success);
+}
+
+/* ─────────────────────────────────────────────
+   5. TOASTS — one notification design
+   ───────────────────────────────────────────── */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: var(--kb-surface);
+    color: var(--kb-text);
+    border: 1px solid var(--kb-border);
+    border-left: 4px solid var(--kb-primary);
+    border-radius: var(--kb-radius-sm);
+    box-shadow: var(--kb-shadow-md);
+    padding: 14px 18px;
+    min-width: 280px;
+    max-width: 400px;
+    font: 400 0.9rem/1.5 var(--kb-font);
+}
+
+.toast.success,
+.toast-success { border-left-color: var(--kb-success); }
+
+.toast.error,
+.toast-error { border-left-color: var(--kb-danger); }
+
+.toast.warning,
+.toast-warning { border-left-color: var(--kb-warning); }
+
+.toast.info,
+.toast-info { border-left-color: var(--kb-info); }
+
+.toast .toast-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+}
+
+.toast .toast-message { color: var(--kb-text-muted); }
+
+/* ─────────────────────────────────────────────
+   6. EMPTY STATES — one dashed placeholder
+   ───────────────────────────────────────────── */
+.empty-state,
+.customer-empty-state {
+    background: var(--kb-bg-soft);
+    border: 1.5px dashed var(--kb-border);
+    border-radius: var(--kb-radius-md);
+    padding: 26px 16px;
+    text-align: center;
+    color: var(--kb-text-muted);
+}
+
+.empty-hint,
+.customer-history-empty,
+.admin-qr-empty {
+    color: var(--kb-text-muted);
+}
+
+.empty-state-icon {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+    color: var(--kb-primary-light);
+}
+
+/* ─────────────────────────────────────────────
+   7. MODALS — one dialog + overlay treatment
+   ───────────────────────────────────────────── */
+.modal-content,
+.staff-modal,
+.terms-modal,
+.logout-confirmation-dialog {
+    border-radius: var(--kb-radius-lg);
+    border: 1px solid var(--kb-border);
+    box-shadow: 0 22px 56px rgba(59, 23, 52, 0.18);
+    font-family: var(--kb-font);
+    color: var(--kb-text);
+}
+
+.modal-overlay,
+.staff-modal-overlay,
+.terms-overlay,
+.logout-confirmation-overlay {
+    padding: 12px;
+}
+
+.modal-header,
+.terms-modal-header {
+    border-bottom-color: var(--kb-border);
+}
+
+.modal-footer {
+    border-top-color: var(--kb-border);
+}
+
+.logout-confirmation-title {
+    font-weight: 600;
+    color: var(--kb-plum);
+}
+
+.logout-confirmation-message {
+    color: var(--kb-text-muted);
+}
+
+/* ─────────────────────────────────────────────
+   8. ACCESSIBILITY — respect reduced motion
+   ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
